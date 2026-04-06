@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bfsjt4e72p7j3"
+path="res://.godot/imported/Lever Cycle WAV.wav-a5973806cb4f9d8f61dfc807636302aa.sample"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/WAV/Lever Cycle WAV.wav"
+dest_files=["res://.godot/imported/Lever Cycle WAV.wav-a5973806cb4f9d8f61dfc807636302aa.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dadraieob1ftu"
+path="res://.godot/imported/22LR Bolt Mag Reload Full MP3.mp3-16ba8317d787df52d39d2181dbb79e48.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/MP3/22LR Bolt Mag Reload Full MP3.mp3"
+dest_files=["res://.godot/imported/22LR Bolt Mag Reload Full MP3.mp3-16ba8317d787df52d39d2181dbb79e48.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

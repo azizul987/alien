@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://4vycdrrtau7w"
+path="res://.godot/imported/Lever Cycle MP3.mp3-d2c4cad9a59a02dca040cc1cf6d97b1b.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/MP3/Lever Cycle MP3.mp3"
+dest_files=["res://.godot/imported/Lever Cycle MP3.mp3-d2c4cad9a59a02dca040cc1cf6d97b1b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

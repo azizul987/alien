@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bin27rsvt3t5u"
+path="res://.godot/imported/556 Single WAV.wav-44d4b12dc14fd35d30fee3019587f5ef.sample"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Full Sound/5.56/WAV/556 Single WAV.wav"
+dest_files=["res://.godot/imported/556 Single WAV.wav-44d4b12dc14fd35d30fee3019587f5ef.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

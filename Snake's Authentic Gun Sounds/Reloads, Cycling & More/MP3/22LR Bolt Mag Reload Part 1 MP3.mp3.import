@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://txjsmo1nm0u5"
+path="res://.godot/imported/22LR Bolt Mag Reload Part 1 MP3.mp3-27dedb7ea9d0c0d6743d770af98fe617.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/MP3/22LR Bolt Mag Reload Part 1 MP3.mp3"
+dest_files=["res://.godot/imported/22LR Bolt Mag Reload Part 1 MP3.mp3-27dedb7ea9d0c0d6743d770af98fe617.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

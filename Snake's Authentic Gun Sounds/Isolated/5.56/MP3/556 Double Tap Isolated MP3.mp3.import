@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyear5qh3gyu4"
+path="res://.godot/imported/556 Double Tap Isolated MP3.mp3-915f5ef0e85eaf01da75c2393ce8f61b.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Isolated/5.56/MP3/556 Double Tap Isolated MP3.mp3"
+dest_files=["res://.godot/imported/556 Double Tap Isolated MP3.mp3-915f5ef0e85eaf01da75c2393ce8f61b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ch64nt8ei37vo"
+path="res://.godot/imported/Angel Mag Reload Part 1 MP3.mp3-a177142f462d0f1eeb305377bdd6b607.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/MP3/Angel Mag Reload Part 1 MP3.mp3"
+dest_files=["res://.godot/imported/Angel Mag Reload Part 1 MP3.mp3-a177142f462d0f1eeb305377bdd6b607.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

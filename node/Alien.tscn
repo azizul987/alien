@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://cj6yuuxcxvp0h"]
+
+[ext_resource type="Texture2D" uid="uid://cyggwilq7lu8w" path="res://PostApocalypse_AssetPack_v1.1.2/Enemies/Zombie_Axe/Zombie_Axe_Down_First-Attack-Sheet7.png" id="1_hs0f4"]
+[ext_resource type="Script" uid="uid://cwxangvt8xw5h" path="res://skrip/alien.gd" id="1_qgse6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgse6"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(0, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5v8j"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(15, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtl1n"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(30, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhomo"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(45, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7ktv"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(60, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmswm"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(75, 0, 15, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyq1d"]
+atlas = ExtResource("1_hs0f4")
+region = Rect2(90, 0, 15, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xv5fc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgse6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5v8j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtl1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhomo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7ktv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pmswm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uyq1d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u3w5v"]
+
+[node name="Alien" type="CharacterBody2D" unique_id=162389173]
+script = ExtResource("1_qgse6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2110083576]
+sprite_frames = SubResource("SpriteFrames_xv5fc")
+autoplay = "default"
+frame_progress = 0.49952266
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=665993611]
+shape = SubResource("CircleShape2D_u3w5v")

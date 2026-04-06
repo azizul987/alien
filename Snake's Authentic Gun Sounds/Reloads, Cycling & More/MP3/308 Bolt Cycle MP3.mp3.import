@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://4njcyvok2ld"
+path="res://.godot/imported/308 Bolt Cycle MP3.mp3-94a4a7710f9e793ff6d7200c6e1cb7d7.mp3str"
+
+[deps]
+
+source_file="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/MP3/308 Bolt Cycle MP3.mp3"
+dest_files=["res://.godot/imported/308 Bolt Cycle MP3.mp3-94a4a7710f9e793ff6d7200c6e1cb7d7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,9 +1,10 @@
 [gd_scene format=4 uid="uid://bu8wkje6n7v0o"]
 
 [ext_resource type="Texture2D" uid="uid://d3wsxr814e65p" path="res://Tech Dungeon Roguelite - Asset Pack (DEMO)/Players/players blue x1.png" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://bvp8yjut7fbnv" path="res://character_body_2d.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://bvp8yjut7fbnv" path="res://skrip/character_body_2d.gd" id="2_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://cb56vmggv4m0t" path="res://Room_Builder_free_32x32.png" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://cj6yuuxcxvp0h" path="res://Alien.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cj6yuuxcxvp0h" path="res://node/Alien.tscn" id="4_1bvp3"]
+[ext_resource type="AudioStream" uid="uid://bin27rsvt3t5u" path="res://Snake's Authentic Gun Sounds/Full Sound/5.56/WAV/556 Single WAV.wav" id="4_lquwl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h2yge"]
 texture = ExtResource("2_h2yge")
@@ -384,7 +385,9 @@ texture_region_size = Vector2i(32, 32)
 5:73/0 = 0
 6:73/0 = 0
 2:22/0 = 0
+2:22/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 2:21/0 = 0
+2:21/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 3:21/0 = 0
 4:21/0 = 0
 5:21/0 = 0
@@ -826,7 +829,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Shoot",
-"speed": 5.0
+"speed": 70.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -854,7 +857,7 @@ tile_map_data = PackedByteArray("AAAJAAMAAAAMAC0AAAAJAAQAAAAMAC4AAAANAAMAAAAMAC0
 tile_set = SubResource("TileSet_7mycd")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=687742895 groups=["player"]]
-position = Vector2(343, 68)
+position = Vector2(420, 30)
 scale = Vector2(2, 2)
 script = ExtResource("2_1bvp3")
 
@@ -863,7 +866,9 @@ script = ExtResource("2_1bvp3")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D/Pivot" unique_id=356108890]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_d13ii")
-animation = &"Talk"
+animation = &"Shoot"
+frame = 3
+frame_progress = 1.0
 
 [node name="GunPoint" type="Marker2D" parent="CharacterBody2D/Pivot" unique_id=2030321700]
 position = Vector2(1, -6)
@@ -874,6 +879,15 @@ shape = SubResource("CircleShape2D_lquwl")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=186871413]
 
-[node name="Node2D" parent="." unique_id=162389173 instance=ExtResource("4_1bvp3")]
-position = Vector2(562, 10)
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="CharacterBody2D" unique_id=1195664660]
+stream = ExtResource("4_lquwl")
+
+[node name="enemy" parent="." unique_id=162389173 instance=ExtResource("4_1bvp3")]
+position = Vector2(576, 187)
 scale = Vector2(2, 2)
+
+[node name="Kiri" type="Marker2D" parent="enemy" unique_id=767745115]
+position = Vector2(0, 39.84)
+
+[node name="Kanan" type="Marker2D" parent="enemy" unique_id=2067850318]
+position = Vector2(0, -34.075)
