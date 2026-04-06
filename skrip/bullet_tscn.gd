@@ -8,8 +8,12 @@ var damage := 1
 var shooter: Node = null
 var start_position := Vector2.ZERO
 
+var is_tranq: bool = false
+var bullet_color: Color = Color.YELLOW
+
 func _ready() -> void:
 	start_position = global_position
+	$Sprite2D.modulate = bullet_color
 
 func _process(delta: float) -> void:
 	global_position += direction * SPEED * delta
