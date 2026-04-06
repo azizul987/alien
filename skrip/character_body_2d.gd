@@ -70,6 +70,10 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
 
+	if Input.is_action_just_pressed("swap_weapon"):
+		use_tranq = !use_tranq
+		print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
+
 func shoot() -> void:
 	if !can_shoot:
 		return
@@ -84,8 +88,18 @@ func shoot() -> void:
 	ammo -= 1
 
 	sprite.play("Shoot")
-	gun_sound.play();
+	gun_sound.play()
+
 	var bullet = bullet_scene.instantiate()
+
+	bullet.is_tranq = use_tranq
+	if use_tranq:
+		bullet.bullet_color = Color.CYAN
+		bullet.damage = 1
+	else:
+		bullet.bullet_color = Color.YELLOW
+		bullet.damage = 3
+
 	get_tree().current_scene.add_child(bullet)
 
 	var mouse_pos := get_global_mouse_position()
