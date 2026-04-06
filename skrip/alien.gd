@@ -10,6 +10,13 @@ var target_pos: Vector2
 var left_pos: Vector2
 var right_pos: Vector2
 
+@onready var kaki_kiri: Marker2D = $KakiKiri
+@onready var kaki_kanan: Marker2D = $KakiKanan
+
+var jejak_scene = preload("res://jejak.tscn")
+var giliran_kaki_kiri: bool = true
+
+
 func take_damage(amount: int) -> void:
 	print("TARGET KENA")
 	animasi.play("Death")
@@ -44,3 +51,21 @@ func _physics_process(delta: float) -> void:
 		velocity = to_target.normalized() * speed
 
 	move_and_slide()
+
+func _on_timer_timeout() -> void:
+	if velocity.length() > 0:
+		buat_jejak()
+		print("jejak")
+
+func buat_jejak():
+	var jejak_baru = jejak_scene.instantiate()
+	get_parent().add_child(jejak_baru)
+	
+	var marker_aktif: Marker2D
+	if giliran_kaki_kiri:
+		marker_aktif = $KakiKiri
+	else:
+		marker_aktif = $KakiKanan
+		
+	jejak_baru.global_position = marker_aktif.global_position
+	giliran_kaki_kiri = !giliran_kaki_kiri
