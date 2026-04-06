@@ -2,6 +2,27 @@
 
 [ext_resource type="Texture2D" uid="uid://cyggwilq7lu8w" path="res://PostApocalypse_AssetPack_v1.1.2/Enemies/Zombie_Axe/Zombie_Axe_Down_First-Attack-Sheet7.png" id="1_hs0f4"]
 [ext_resource type="Script" uid="uid://cwxangvt8xw5h" path="res://skrip/alien.gd" id="1_qgse6"]
+[ext_resource type="Texture2D" uid="uid://crrdh70f5mxa5" path="res://alien_death.png" id="2_41040"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6n1w"]
+atlas = ExtResource("2_41040")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_poa8d"]
+atlas = ExtResource("2_41040")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kb1ah"]
+atlas = ExtResource("2_41040")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8kpo"]
+atlas = ExtResource("2_41040")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kujwg"]
+atlas = ExtResource("2_41040")
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgse6"]
 atlas = ExtResource("1_hs0f4")
@@ -33,6 +54,26 @@ region = Rect2(90, 0, 15, 21)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xv5fc"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6n1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_poa8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kb1ah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8kpo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kujwg")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qgse6")
@@ -68,7 +109,6 @@ script = ExtResource("1_qgse6")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2110083576]
 sprite_frames = SubResource("SpriteFrames_xv5fc")
 autoplay = "default"
-frame_progress = 0.49952266
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=665993611]
 shape = SubResource("CircleShape2D_u3w5v")

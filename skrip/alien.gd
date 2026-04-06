@@ -5,13 +5,15 @@ extends CharacterBody2D
 
 @onready var kiri: Marker2D = $Kiri
 @onready var kanan: Marker2D = $Kanan
-
+@onready var animasi:AnimatedSprite2D=$AnimatedSprite2D
 var target_pos: Vector2
 var left_pos: Vector2
 var right_pos: Vector2
 
 func take_damage(amount: int) -> void:
 	print("TARGET KENA")
+	animasi.play("Death")
+	await animasi.animation_finished
 	queue_free()
 
 func _ready() -> void:

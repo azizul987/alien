@@ -16,8 +16,8 @@ radius = 18.248287
 script = ExtResource("1_upeyj")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1830344663]
-position = Vector2(0.5000006, 1.500001)
-scale = Vector2(0.07421875, 17.000002)
+position = Vector2(0.5000006, -1.1920929e-07)
+scale = Vector2(0.07421875, 5.9999995)
 texture = SubResource("GradientTexture1D_upeyj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1038057449]
