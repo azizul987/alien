@@ -5,25 +5,45 @@ const FIRE_RATE := 0.5
 const MAX_AMMO := 120
 const RELOAD_TIME := 1.0
 
+@onready var detector: Node2D = $TileDetector
 @onready var sprite: AnimatedSprite2D = $Pivot/AnimatedSprite2D
 @onready var gun_point: Marker2D = $Pivot/GunPoint
 @onready var gun_sound:AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var deteksi:Area2D = $Deteksi
+
+
 var bullet_scene = preload("res://node/bullet_tscn.tscn")
 
 var can_shoot := true
 var ammo := MAX_AMMO
 var is_reloading := false
 var is_shooting := false
-var use_tranq: bool = true
+var dekat_pintu := false
+
+
+var is_using_kacamata=false;
+
+@onready var step_sound:AudioStreamPlayer2D=$Footstep
 
 func _physics_process(delta: float) -> void:
+	var ada_pintu = detector.is_near_type(global_position, "door")
+
+	if ada_pintu and !dekat_pintu:
+		dekat_pintu = true
+		print("Dekat pintu")
+
+	if !ada_pintu and dekat_pintu:
+		dekat_pintu = false
+		print("Menjauh dari pintu")
+
+	if dekat_pintu and Input.is_action_just_pressed("interact"):
+		print("Interaksi dengan pintu")
 	var input_x := Input.get_axis("ui_left", "ui_right")
 	var input_y := Input.get_axis("ui_up", "ui_down")
 	var input_vector := Vector2(input_x, input_y).normalized()
 
 	velocity = input_vector * SPEED
 	move_and_slide()
-
 	var mouse_pos := get_global_mouse_position()
 
 	if input_x < 0:
@@ -37,9 +57,15 @@ func _physics_process(delta: float) -> void:
 		if input_vector != Vector2.ZERO:
 			if sprite.animation != "Run":
 				sprite.play("Run")
+
+			if !step_sound.playing:
+				step_sound.play()
 		else:
 			if sprite.animation != "Idle":
 				sprite.play("Idle")
+
+			if step_sound.playing:
+				step_sound.stop()
 
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
