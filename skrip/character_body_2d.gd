@@ -21,24 +21,17 @@ var is_shooting := false
 var dekat_pintu := false
 var use_tranq :bool
 
+
 var is_using_kacamata=false;
 var facing_direction := Vector2.DOWN
 
 @onready var step_sound:AudioStreamPlayer2D=$Footstep
 
 func _physics_process(delta: float) -> void:
-	var ada_pintu = detector.is_near_type(global_position, "door")
+	#ini adalah conoth pakai detecor nah disini aku mau simpan biar ingat
+	#var ada_pintu = detector.is_near_type(global_position, "door")
 
-	if ada_pintu and !dekat_pintu:
-		dekat_pintu = true
-		print("Dekat pintu")
-
-	if !ada_pintu and dekat_pintu:
-		dekat_pintu = false
-		print("Menjauh dari pintu")
-
-	if dekat_pintu and Input.is_action_just_pressed("interact"):
-		print("Interaksi dengan pintu")
+	
 	var input_x := Input.get_axis("ui_left", "ui_right")
 	var input_y := Input.get_axis("ui_up", "ui_down")
 	var input_vector := Vector2(input_x, input_y).normalized()
