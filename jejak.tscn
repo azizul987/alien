@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cq4jixucphpwo"]
+
+[ext_resource type="Texture2D" uid="uid://b60heb03ns4we" path="res://asset/footprint.png" id="1_3dcqq"]
+[ext_resource type="Script" uid="uid://bgnj2xknm0mii" path="res://jejak.gd" id="1_gm2j2"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gm2j2"]
+blend_mode = 1
+light_mode = 2
+
+[sub_resource type="Animation" id="Animation_gm2j2"]
+resource_name = "Fade"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_kby3a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7t0fl"]
+_data = {
+&"Fade": SubResource("Animation_gm2j2"),
+&"RESET": SubResource("Animation_kby3a")
+}
+
+[node name="jejak" type="Node2D" unique_id=106671286]
+script = ExtResource("1_gm2j2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1869815339]
+light_mask = 4
+material = SubResource("CanvasItemMaterial_gm2j2")
+texture = ExtResource("1_3dcqq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=1675563600]
+libraries/ = SubResource("AnimationLibrary_7t0fl")
+autoplay = &"Fade"

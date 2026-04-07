@@ -10,7 +10,7 @@ const RELOAD_TIME := 1.0
 @onready var gun_point: Marker2D = $Pivot/GunPoint
 @onready var gun_sound:AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var deteksi:Area2D = $Deteksi
-
+@onready var kacamata:PointLight2D = $kacamata
 
 var bullet_scene = preload("res://node/bullet_tscn.tscn")
 
@@ -22,6 +22,7 @@ var dekat_pintu := false
 var use_tranq :bool
 
 var is_using_kacamata=false;
+var facing_direction := Vector2.DOWN
 
 @onready var step_sound:AudioStreamPlayer2D=$Footstep
 
@@ -67,54 +68,75 @@ func _physics_process(delta: float) -> void:
 			if step_sound.playing:
 				step_sound.stop()
 
-	if Input.is_action_just_pressed("shoot"):
-		shoot()
+	#if Input.is_action_just_pressed("shoot"):
+		#shoot()
 
-	if Input.is_action_just_pressed("swap_weapon"):
-		use_tranq = !use_tranq
-		print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
+	#if Input.is_action_just_pressed("swap_weapon"):
+		#use_tranq = !use_tranq
+		#print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
+		
+	if Input.is_action_just_pressed("toggle_kacamata"):
+		if is_using_kacamata == false:
+			is_using_kacamata = true
+			kacamata.enabled = true
+			print("Kacamata digunakan")
+		else:
+			is_using_kacamata = false
+			kacamata.enabled = false
+			print("Kacamata dimatikan")
+		
+	var input_dir = Vector2(
+		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
+		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	)
 
-func shoot() -> void:
-	if !can_shoot:
-		return
-	if is_reloading:
-		return
-	if ammo <= 0:
-		reload_weapon()
-		return
+	if input_dir != Vector2.ZERO:
+		facing_direction = input_dir.normalized()
 
-	can_shoot = false
-	is_shooting = true
-	ammo -= 1
+	# putar node cahaya ke arah karakter
+	kacamata.rotation = facing_direction.angle()
 
-	sprite.play("Shoot")
-	gun_sound.play()
-
-	var bullet = bullet_scene.instantiate()
-
-	bullet.is_tranq = use_tranq
-	if use_tranq:
-		bullet.bullet_color = Color.CYAN
-		bullet.damage = 1
-	else:
-		bullet.bullet_color = Color.YELLOW
-		bullet.damage = 3
-
-	get_tree().current_scene.add_child(bullet)
-
-	var mouse_pos := get_global_mouse_position()
-	var dir := (mouse_pos - gun_point.global_position).normalized()
-
-	bullet.global_position = gun_point.global_position + dir * 20.0
-	bullet.direction = dir
-	bullet.rotation = dir.angle()
-	bullet.shooter = self
-
-	await sprite.animation_finished
-	is_shooting = false
-
-	await get_tree().create_timer(FIRE_RATE).timeout
-	can_shoot = true
+#func shoot() -> void:
+	#if !can_shoot:
+		#return
+	#if is_reloading:
+		#return
+	#if ammo <= 0:
+		#reload_weapon()
+		#return
+#
+	#can_shoot = false
+	#is_shooting = true
+	#ammo -= 1
+#
+	#sprite.play("Shoot")
+	#gun_sound.play()
+#
+	#var bullet = bullet_scene.instantiate()
+#
+	#bullet.is_tranq = use_tranq
+	#if use_tranq:
+		#bullet.bullet_color = Color.CYAN
+		#bullet.damage = 1
+	#else:
+		#bullet.bullet_color = Color.YELLOW
+		#bullet.damage = 3
+#
+	#get_tree().current_scene.add_child(bullet)
+#
+	#var mouse_pos := get_global_mouse_position()
+	#var dir := (mouse_pos - gun_point.global_position).normalized()
+#
+	#bullet.global_position = gun_point.global_position + dir * 20.0
+	#bullet.direction = dir
+	#bullet.rotation = dir.angle()
+	#bullet.shooter = self
+#
+	#await sprite.animation_finished
+	#is_shooting = false
+#
+	#await get_tree().create_timer(FIRE_RATE).timeout
+	#can_shoot = true
 
 func reload_weapon() -> void:
 	if is_reloading:
