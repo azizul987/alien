@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 func _on_timer_timeout() -> void:
 	if velocity.length() > 0:
 		buat_jejak()
-		print("jejak")
+		#print("jejak")
 
 func buat_jejak():
 	var jejak_baru = jejak_scene.instantiate()

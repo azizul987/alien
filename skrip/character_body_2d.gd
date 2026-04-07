@@ -68,12 +68,12 @@ func _physics_process(delta: float) -> void:
 			if step_sound.playing:
 				step_sound.stop()
 
-	#if Input.is_action_just_pressed("shoot"):
-		#shoot()
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
 
-	#if Input.is_action_just_pressed("swap_weapon"):
-		#use_tranq = !use_tranq
-		#print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
+	if Input.is_action_just_pressed("swap_weapon"):
+		use_tranq = !use_tranq
+		print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
 		
 	if Input.is_action_just_pressed("toggle_kacamata"):
 		if is_using_kacamata == false:
@@ -96,47 +96,47 @@ func _physics_process(delta: float) -> void:
 	# putar node cahaya ke arah karakter
 	kacamata.rotation = facing_direction.angle()
 
-#func shoot() -> void:
-	#if !can_shoot:
-		#return
-	#if is_reloading:
-		#return
-	#if ammo <= 0:
-		#reload_weapon()
-		#return
-#
-	#can_shoot = false
-	#is_shooting = true
-	#ammo -= 1
-#
-	#sprite.play("Shoot")
-	#gun_sound.play()
-#
-	#var bullet = bullet_scene.instantiate()
-#
-	#bullet.is_tranq = use_tranq
-	#if use_tranq:
-		#bullet.bullet_color = Color.CYAN
-		#bullet.damage = 1
-	#else:
-		#bullet.bullet_color = Color.YELLOW
-		#bullet.damage = 3
-#
-	#get_tree().current_scene.add_child(bullet)
-#
-	#var mouse_pos := get_global_mouse_position()
-	#var dir := (mouse_pos - gun_point.global_position).normalized()
-#
-	#bullet.global_position = gun_point.global_position + dir * 20.0
-	#bullet.direction = dir
-	#bullet.rotation = dir.angle()
-	#bullet.shooter = self
-#
-	#await sprite.animation_finished
-	#is_shooting = false
-#
-	#await get_tree().create_timer(FIRE_RATE).timeout
-	#can_shoot = true
+func shoot() -> void:
+	if !can_shoot:
+		return
+	if is_reloading:
+		return
+	if ammo <= 0:
+		reload_weapon()
+		return
+
+	can_shoot = false
+	is_shooting = true
+	ammo -= 1
+
+	sprite.play("Shoot")
+	gun_sound.play()
+
+	var bullet = bullet_scene.instantiate()
+
+	bullet.is_tranq = use_tranq
+	if use_tranq:
+		bullet.bullet_color = Color.CYAN
+		bullet.damage = 1
+	else:
+		bullet.bullet_color = Color.YELLOW
+		bullet.damage = 3
+
+	get_tree().current_scene.add_child(bullet)
+
+	var mouse_pos := get_global_mouse_position()
+	var dir := (mouse_pos - gun_point.global_position).normalized()
+
+	bullet.global_position = gun_point.global_position + dir * 20.0
+	bullet.direction = dir
+	bullet.rotation = dir.angle()
+	bullet.shooter = self
+
+	await sprite.animation_finished
+	is_shooting = false
+
+	await get_tree().create_timer(FIRE_RATE).timeout
+	can_shoot = true
 
 func reload_weapon() -> void:
 	if is_reloading:

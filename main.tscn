@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cxlgimtjoraui" path="res://foley_footstep_concrete_1.wav" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://cx3km8bxfo6dt" path="res://tile_detector.gd" id="6_272bh"]
 [ext_resource type="Texture2D" uid="uid://4d11a4fkv7s4" path="res://asset/light/light.png" id="7_kek77"]
-[ext_resource type="Script" uid="uid://bgnj2xknm0mii" path="res://jejak.gd" id="9_4c57u"]
+[ext_resource type="Script" path="res://jejak.gd" id="9_4c57u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h2yge"]
 texture = ExtResource("2_h2yge")
