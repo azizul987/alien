@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwk21n6qen8ue"
-path="res://.godot/imported/pintuup.png-d6ce123d4d0854232b5c391d47a671dd.ctex"
+uid="uid://dmklq2tpqp1q5"
+path="res://.godot/imported/pintu.png-847c1300c5687527da31025376cc0ea7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pintuup.png"
-dest_files=["res://.godot/imported/pintuup.png-d6ce123d4d0854232b5c391d47a671dd.ctex"]
+source_file="res://asset/image/pintu.png"
+dest_files=["res://.godot/imported/pintu.png-847c1300c5687527da31025376cc0ea7.ctex"]
 
 [params]
 

@@ -12,7 +12,7 @@ const RELOAD_TIME := 1.0
 @onready var deteksi:Area2D = $Deteksi
 @onready var kacamata:PointLight2D = $kacamata
 
-var bullet_scene = preload("res://node/bullet_tscn.tscn")
+var bullet_scene = preload("res://asset/node/bullet_tscn.tscn")
 
 var can_shoot := true
 var ammo := MAX_AMMO

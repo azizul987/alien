@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cb56vmggv4m0t"
-path="res://.godot/imported/Room_Builder_free_32x32.png-ef3dbc59c456620c3e2977ac3b929f55.ctex"
+uid="uid://crrdh70f5mxa5"
+path="res://.godot/imported/alien_death.png-2af903e9efb5a15fd7670237b384dd13.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Room_Builder_free_32x32.png"
-dest_files=["res://.godot/imported/Room_Builder_free_32x32.png-ef3dbc59c456620c3e2977ac3b929f55.ctex"]
+source_file="res://asset/image/alien_death.png"
+dest_files=["res://.godot/imported/alien_death.png-2af903e9efb5a15fd7670237b384dd13.ctex"]
 
 [params]
 

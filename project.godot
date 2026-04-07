@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="alien"
-run/main_scene="uid://bu8wkje6n7v0o"
+run/main_scene="uid://cifs6o5ot870u"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://asset/image/icon.svg"
 
 [global_group]
 

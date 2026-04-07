@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwp1284n2ng85"
-path="res://.godot/imported/Interiors_free_32x32.png-ae6020aa6efd10dccf5dfb1062b5622d.ctex"
+uid="uid://cwk21n6qen8ue"
+path="res://.godot/imported/pintuup.png-71afce2a8410ff62982927e72c9bd5c1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Interiors_free_32x32.png"
-dest_files=["res://.godot/imported/Interiors_free_32x32.png-ae6020aa6efd10dccf5dfb1062b5622d.ctex"]
+source_file="res://asset/image/pintuup.png"
+dest_files=["res://.godot/imported/pintuup.png-71afce2a8410ff62982927e72c9bd5c1.ctex"]
 
 [params]
 

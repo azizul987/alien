@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cifs6o5ot870u"]
 
-[ext_resource type="Script" uid="uid://dhk6w86jr3l6g" path="res://main_menu.gd" id="1"]
+[ext_resource type="Script" uid="uid://dhk6w86jr3l6g" path="res://asset/skrip/main_menu.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://cqvacmbhjaofm" path="res://asset/music/snap.wav" id="2_fcj41"]
 
 [node name="MainMenu" type="CanvasLayer" unique_id=1289616865]
 script = ExtResource("1")
@@ -51,3 +52,6 @@ theme_override_font_sizes/font_size = 72
 text = "ALIEN"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="." unique_id=718525906]
+stream = ExtResource("2_fcj41")

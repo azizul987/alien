@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crrdh70f5mxa5"
-path="res://.godot/imported/alien_death.png-7755c3b890eeef963350c2e933b962ee.ctex"
+uid="uid://dhmcbbk5vafaq"
+path="res://.godot/imported/icon.svg-e6a6bcfc4a7b92f02c65da90c554f148.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://alien_death.png"
-dest_files=["res://.godot/imported/alien_death.png-7755c3b890eeef963350c2e933b962ee.ctex"]
+source_file="res://asset/image/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-e6a6bcfc4a7b92f02c65da90c554f148.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -13,7 +13,7 @@ var right_pos: Vector2
 @onready var kaki_kiri: Marker2D = $KakiKiri
 @onready var kaki_kanan: Marker2D = $KakiKanan
 
-var jejak_scene = preload("res://jejak.tscn")
+var jejak_scene = preload("res://asset/scene/jejak.tscn")
 var giliran_kaki_kiri: bool = true
 
 

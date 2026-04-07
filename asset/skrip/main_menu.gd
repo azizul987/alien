@@ -3,13 +3,12 @@ extends CanvasLayer
 ## Main Menu - Bereaksi terhadap tombol APA SAJA untuk memulai game
 ## Letakkan script ini di node CanvasLayer (atau Control) untuk scene menu utama
 
-const GAME_SCENE := "res://main.tscn"
 
 enum MenuState { IDLE, WAITING_INPUT, STARTING }
 var state := MenuState.IDLE
 
 @onready var label_press_any: Label        = $MarginContainer/VBox/LabelPressAny
-@onready var label_title: Label            = $MarginContainer/VBox/LabelTitle
+@onready var label_title: Label            = $LabelTitle
 @onready var anim_player: AnimationPlayer = $AnimationPlayer   # opsional
 
 # Timer kedip teks "Press Any Key"
@@ -79,7 +78,8 @@ func _start_game() -> void:
 	if state == MenuState.STARTING:
 		return
 	state = MenuState.STARTING
-
+	$AudioStreamPlayer2D.play()
+	await $AudioStreamPlayer2D.finished
 
 	if label_press_any:
 		label_press_any.text = "Loading..."
@@ -88,5 +88,5 @@ func _start_game() -> void:
 	if anim_player and anim_player.has_animation("fade_out"):
 		anim_player.play("fade_out")
 		await anim_player.animation_finished
-
-	get_tree().change_scene_to_file(GAME_SCENE)
+	
+	get_tree().change_scene_to_file("res://asset/scene/main.tscn")
