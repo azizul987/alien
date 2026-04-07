@@ -19,7 +19,7 @@ var ammo := MAX_AMMO
 var is_reloading := false
 var is_shooting := false
 var dekat_pintu := false
-
+var use_tranq :bool
 
 var is_using_kacamata=false;
 var facing_direction := Vector2.DOWN
