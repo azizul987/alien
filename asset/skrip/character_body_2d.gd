@@ -8,7 +8,7 @@ const RELOAD_TIME := 1.0
 @onready var detector: Node2D = $TileDetector
 @onready var sprite: AnimatedSprite2D = $Pivot/AnimatedSprite2D
 @onready var gun_point: Marker2D = $Pivot/GunPoint
-@onready var gun_sound:AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var gun_sound:AudioStreamPlayer2D = $GunSound
 @onready var deteksi:Area2D = $Deteksi
 @onready var kacamata:PointLight2D = $kacamata
 
