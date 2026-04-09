@@ -42,7 +42,9 @@ func open_or_close():
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_dekat = true
+		body.get_child(5).show_tanda()
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_dekat = false
+		body.get_child(5).hide_tanda()

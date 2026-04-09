@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://bq8a4gyuhern4" path="res://asset/deteksi.gd" id="5_nvl01"]
 [ext_resource type="Script" uid="uid://cx3km8bxfo6dt" path="res://asset/skrip/tile_detector.gd" id="6_ivps1"]
 [ext_resource type="Texture2D" uid="uid://4d11a4fkv7s4" path="res://asset/light/light.png" id="7_urp6f"]
+[ext_resource type="Texture2D" uid="uid://d4nnpray7vrr" path="res://door.png" id="9_n7ghd"]
+[ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="10_nvl01"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
 atlas = ExtResource("2_dw050")
@@ -162,6 +164,10 @@ radius = 5.5226803
 [sub_resource type="CircleShape2D" id="CircleShape2D_7mycd"]
 radius = 17.117243
 
+[sub_resource type="TextMesh" id="TextMesh_ivps1"]
+text = "Pencet E"
+font = ExtResource("10_nvl01")
+
 [node name="Player" type="CharacterBody2D" unique_id=1445277376 groups=["player"]]
 scale = Vector2(2, 2)
 script = ExtResource("1_1jxqw")
@@ -212,6 +218,20 @@ energy = 1.3
 range_item_cull_mask = 7
 texture = ExtResource("7_urp6f")
 texture_scale = 1.2
+
+[node name="Tanda" type="Node2D" parent="." unique_id=1939882875]
+position = Vector2(5.9999995, 2.999999)
+scale = Vector2(1, 0.94921875)
+
+[node name="Door" type="Sprite2D" parent="Tanda" unique_id=1400151149]
+position = Vector2(-5.5, -22.123457)
+scale = Vector2(0.34374997, 0.3621399)
+texture = ExtResource("9_n7ghd")
+
+[node name="Text" type="MeshInstance2D" parent="Tanda" unique_id=1246779242]
+position = Vector2(-5.499999, -26.337448)
+scale = Vector2(20.591593, -26.886143)
+mesh = SubResource("TextMesh_ivps1")
 
 [connection signal="body_entered" from="Deteksi" to="Deteksi" method="_on_body_entered"]
 [connection signal="body_exited" from="Deteksi" to="Deteksi" method="_on_body_exited"]
