@@ -1,14 +1,24 @@
 [gd_scene format=3 uid="uid://cxj0wpneuc1ad"]
 
 [ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="1_lr5s8"]
+[ext_resource type="Script" uid="uid://cg2dct0uur5m7" path="res://asset/scene/menu_pause.gd" id="1_qe8k7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lr5s8"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
 
 [node name="Menu Pause" type="Control" unique_id=1040678243]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_qe8k7")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=899645719]
 
@@ -20,7 +30,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="CanvasLayer/Control" unique_id=1429893408]
+[node name="lanjut" type="Button" parent="CanvasLayer/Control" unique_id=1429893408]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -35,9 +46,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_lr5s8")
 theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_lr5s8")
 text = "Lanjut"
 
-[node name="Button2" type="Button" parent="CanvasLayer/Control" unique_id=221041412]
+[node name="keluar" type="Button" parent="CanvasLayer/Control" unique_id=221041412]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -52,4 +65,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_lr5s8")
 theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_lr5s8")
 text = "Keluar"
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=608545309]
+
+[node name="Point" type="Label" parent="CanvasLayer2" unique_id=1821518308]
+offset_left = 58.0
+offset_top = 36.0
+offset_right = 196.0
+offset_bottom = 74.0
+theme_override_fonts/font = ExtResource("1_lr5s8")
+theme_override_font_sizes/font_size = 32
+text = "000"
+autowrap_mode = 3
+
+[connection signal="pressed" from="CanvasLayer/Control/lanjut" to="." method="on_press_lanjut"]
+[connection signal="pressed" from="CanvasLayer/Control/keluar" to="." method="on_press_keluar"]

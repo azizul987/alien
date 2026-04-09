@@ -1,6 +1,6 @@
 extends Area2D
 
-const SPEED := 300.0
+const SPEED := 700.0
 const MAX_DISTANCE := 1200.0
 
 var direction := Vector2.ZERO
@@ -12,10 +12,13 @@ var is_tranq: bool = false
 var bullet_color: Color = Color.YELLOW
 
 func _ready() -> void:
+	monitoring = false
 	start_position = global_position
 	$Sprite2D.modulate = bullet_color
+	await get_tree().physics_frame
+	monitoring = true
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	global_position += direction * SPEED * delta
 
 	if global_position.distance_to(start_position) >= MAX_DISTANCE:
@@ -31,6 +34,5 @@ func _on_body_entered(body: Node) -> void:
 		return
 
 	if body.has_method("take_damage"):
-		body.take_damage(damage)
-
+			body.take_damage(damage, shooter)
 	queue_free()
