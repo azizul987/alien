@@ -5,7 +5,9 @@ extends Node2D
 func _ready() -> void:
 	$AnimationPlayer.play("INtro")
 	await  $AnimationPlayer.animation_finished
-	
+	$AnimationPlayer.queue_free()
+	$Camera2D.queue_free()
+	print("wkwkwk")
 	
 
 
