@@ -1,6 +1,6 @@
 extends Area2D
 
-const SPEED := 3000.0
+const SPEED := 300.0
 const MAX_DISTANCE := 1200.0
 
 var direction := Vector2.ZERO

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://d3wsxr814e65p" path="res://Tech Dungeon Roguelite - Asset Pack (DEMO)/Players/players blue x1.png" id="2_dw050"]
 [ext_resource type="AudioStream" uid="uid://bin27rsvt3t5u" path="res://Snake's Authentic Gun Sounds/Full Sound/5.56/WAV/556 Single WAV.wav" id="3_b26j0"]
 [ext_resource type="Script" uid="uid://q3geu068gi58" path="res://camera_2d.gd" id="3_dw050"]
+[ext_resource type="Texture2D" uid="uid://24gevtw58g51" path="res://asset/image/hide.png" id="3_nvl01"]
 [ext_resource type="AudioStream" uid="uid://cxlgimtjoraui" path="res://asset/music/foley_footstep_concrete_1.wav" id="4_n7ghd"]
 [ext_resource type="Script" uid="uid://bq8a4gyuhern4" path="res://asset/deteksi.gd" id="5_nvl01"]
 [ext_resource type="Script" uid="uid://cx3km8bxfo6dt" path="res://asset/skrip/tile_detector.gd" id="6_ivps1"]
@@ -38,6 +39,10 @@ region = Rect2(160, 160, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dg77c"]
 atlas = ExtResource("2_dw050")
 region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvl01"]
+atlas = ExtResource("2_dw050")
+region = Rect2(32, 128, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ycdy4"]
 atlas = ExtResource("2_dw050")
@@ -79,6 +84,22 @@ region = Rect2(0, 32, 32, 32)
 atlas = ExtResource("2_dw050")
 region = Rect2(32, 32, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivps1"]
+atlas = ExtResource("3_nvl01")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urp6f"]
+atlas = ExtResource("3_nvl01")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwjto"]
+atlas = ExtResource("3_nvl01")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_606se"]
+atlas = ExtResource("3_nvl01")
+region = Rect2(128, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_d13ii"]
 animations = [{
 "frames": [{
@@ -107,6 +128,27 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dg77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvl01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvl01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvl01")
 }],
 "loop": true,
 "name": &"Idle",
@@ -156,6 +198,23 @@ animations = [{
 "loop": true,
 "name": &"Talk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivps1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urp6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwjto")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_606se")
+}],
+"loop": true,
+"name": &"hide",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lquwl"]
@@ -177,8 +236,10 @@ script = ExtResource("1_1jxqw")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot" unique_id=1289840950]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_d13ii")
-animation = &"Death"
-frame_progress = 0.06293054
+animation = &"Idle"
+autoplay = "Idle"
+frame = 1
+frame_progress = 0.57246095
 
 [node name="GunPoint" type="Marker2D" parent="Pivot" unique_id=1735624291]
 position = Vector2(1, -6)

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cwxangvt8xw5h" path="res://asset/skrip/alien.gd" id="1_qgse6"]
 [ext_resource type="Texture2D" uid="uid://crrdh70f5mxa5" path="res://asset/image/alien_death.png" id="2_41040"]
+[ext_resource type="AudioStream" uid="uid://xj2euf0d6365" path="res://asset/music/bone_snap.wav" id="2_rasv4"]
 [ext_resource type="Texture2D" uid="uid://b18bhhbtuw7cx" path="res://Characters_free/Adam_run_16x16.png" id="3_41040"]
 [ext_resource type="Texture2D" uid="uid://cuukc4tjkwhuf" path="res://Characters_free/Alex_16x16.png" id="4_d6n1w"]
 
@@ -147,11 +148,15 @@ animations = [{
 [node name="Alien" type="CharacterBody2D" unique_id=162389173]
 script = ExtResource("1_qgse6")
 
+[node name="Suara Mati" type="AudioStreamPlayer2D" parent="." unique_id=2048997434]
+stream = ExtResource("2_rasv4")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2110083576]
 sprite_frames = SubResource("SpriteFrames_xv5fc")
-animation = &"new_animation"
+animation = &"Death"
 autoplay = "adam_samping"
-frame_progress = 0.090104945
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=665993611]
 shape = SubResource("CircleShape2D_u3w5v")

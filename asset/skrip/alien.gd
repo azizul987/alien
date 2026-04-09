@@ -21,6 +21,8 @@ func take_damage(amount: int) -> void:
 	print("TARGET KENA")
 	animasi.play("Death")
 	await animasi.animation_finished
+	$"Suara Mati".play()
+	await  $"Suara Mati".finished
 	queue_free()
 
 func _ready() -> void:
