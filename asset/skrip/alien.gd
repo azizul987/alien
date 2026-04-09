@@ -15,7 +15,7 @@ var right_pos: Vector2
 
 var jejak_scene = preload("res://asset/scene/jejak.tscn")
 var giliran_kaki_kiri: bool = true
-
+@export var isJahat:bool
 
 func take_damage(amount: int) -> void:
 	print("TARGET KENA")
@@ -54,7 +54,8 @@ func _physics_process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	if velocity.length() > 0:
-		buat_jejak()
+		if isJahat:
+			buat_jejak()
 		#print("jejak")
 
 func buat_jejak():

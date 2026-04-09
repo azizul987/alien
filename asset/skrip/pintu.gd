@@ -17,7 +17,7 @@ func open_or_close():
 		return
 		
 	sedang_bergerak = true
-	
+	$"Suara Pintu".play()
 	var akan_terbuka = !terbuka
 	var target_sudut = 90.0 if akan_terbuka else 0.0
 	var target_rad = deg_to_rad(target_sudut)

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnja8u62jcq5u" path="res://asset/skrip/pintu.gd" id="1_i5led"]
 [ext_resource type="Texture2D" uid="uid://cwk21n6qen8ue" path="res://asset/image/pintuup.png" id="2_i5led"]
+[ext_resource type="AudioStream" uid="uid://bdci1aavo0dtd" path="res://asset/music/slide_and_click.wav" id="3_0qo6l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_35vsr"]
 size = Vector2(64, 9)
@@ -25,6 +26,9 @@ debug_color = Color(0.8588036, 0.15985367, 0.6921866, 0.41960785)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=25324803]
 shape = SubResource("CircleShape2D_i5led")
+
+[node name="Suara Pintu" type="AudioStreamPlayer2D" parent="." unique_id=1094025095]
+stream = ExtResource("3_0qo6l")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

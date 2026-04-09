@@ -10,6 +10,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if(Input.is_action_just_pressed("interact") and near_door):
 		near_door. open_or_close()
+		
 
 
 func _on_body_entered(body: Node2D) -> void:
