@@ -1,10 +1,12 @@
 extends CharacterBody2D
 
-const SPEED := 300.0
+const SPEED := 250.0
 const FIRE_RATE := 0.5
-const MAX_AMMO := 9
+const MAX_AMMO := 7
 const RELOAD_TIME := 1.0
 const RELOAD_REMINDER_INTERVAL := 0.5
+const HIDE_LIMIT := 3
+const HIDE_GROUP_SCAN_RADIUS := 3
 
 @onready var detector: Node2D = $TileDetector
 @onready var sprite: AnimatedSprite2D = $Pivot/AnimatedSprite2D
@@ -14,7 +16,9 @@ const RELOAD_REMINDER_INTERVAL := 0.5
 @onready var kacamata: PointLight2D = $kacamata
 @onready var step_sound: AudioStreamPlayer2D = $Footstep
 @onready var petunjuk: TileMapLayer = $"../Petunjuk"
+@onready var hide_object: TileMapLayer = $"../HideObject"
 @onready var tanda_tanya: Node2D = $"Tanda Tanya"
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 var bullet_scene = preload("res://asset/node/bullet_tscn.tscn")
 const FLOATING_DAMAGE_TEXT_TSCN = preload("uid://bucnhf80vdpqa")
@@ -31,11 +35,44 @@ var facing_direction := Vector2.DOWN
 
 var reload_reminder_cooldown := 0.0
 var total_score := 0
+var current_petunjuk_id: int = 0
+
+# ===== HIDE SYSTEM =====
+var is_hiding: bool = false
+var hide_timer: float = 0.0
+var current_hide_group: int = -1
+var current_hide_tiles: Array[Vector2i] = []
+var debug_hide_enabled: bool = true
 
 func _ready() -> void:
 	tanda_tanya.visible = false
 
 func _physics_process(delta: float) -> void:
+	var ui = get_ui()
+
+	# Dokumen terbuka = player berhenti
+	if ui != null and ui.is_dokumen_open():
+		velocity = Vector2.ZERO
+		if step_sound.playing:
+			step_sound.stop()
+		move_and_slide()
+		return
+
+	# Update sistem hide
+	update_hide_state(delta)
+
+	# Saat sedang sembunyi, player tidak bisa gerak
+	if is_hiding:
+		velocity = Vector2.ZERO
+		if step_sound.playing:
+			step_sound.stop()
+		move_and_slide()
+
+		if Input.is_action_just_pressed("interact"):
+			exit_hide()
+
+		return
+
 	var input_x := Input.get_axis("ui_left", "ui_right")
 	var input_y := Input.get_axis("ui_up", "ui_down")
 	var input_vector := Vector2(input_x, input_y).normalized()
@@ -74,12 +111,21 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("swap_weapon"):
 		use_tranq = !use_tranq
-		print("Senjata sekarang:", "BIUS" if use_tranq else "BIASA")
 
 	if Input.is_action_just_pressed("toggle_kacamata"):
 		is_using_kacamata = !is_using_kacamata
 		kacamata.enabled = is_using_kacamata
-		print("Kacamata digunakan" if is_using_kacamata else "Kacamata dimatikan")
+
+	if Input.is_action_just_pressed("interact"):
+		# Prioritas 1: sembunyi
+		var hide_data := get_hide_tile_data()
+		if !hide_data.is_empty() and hide_data["hideable"]:
+			enter_hide()
+			return
+
+		# Prioritas 2: buka petunjuk
+		if current_petunjuk_id > 0 and ui != null and !ui.is_dokumen_open():
+			ui.buka_dokumen(current_petunjuk_id)
 
 	var input_dir = Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
@@ -99,23 +145,179 @@ func _physics_process(delta: float) -> void:
 	else:
 		reload_reminder_cooldown = 0.0
 
+func get_ui():
+	if get_tree() == null or get_tree().current_scene == null:
+		return null
+
+	if get_tree().current_scene.has_node("Menu Pause"):
+		return get_tree().current_scene.get_node("Menu Pause")
+
+	return null
+
 func update_tanda_tanya() -> void:
+	current_petunjuk_id = get_petunjuk_value()
+	tanda_tanya.visible = current_petunjuk_id > 0 and !is_hiding
+
+func get_petunjuk_value() -> int:
 	if petunjuk == null:
-		tanda_tanya.visible = false
-		return
+		return 0
 
 	var local_pos = petunjuk.to_local(detector.global_position)
 	var tile_pos = petunjuk.local_to_map(local_pos)
 	var tile_data = petunjuk.get_cell_tile_data(tile_pos)
 
 	if tile_data == null:
-		tanda_tanya.visible = false
-		return
+		return 0
 
 	var nilai_petunjuk = tile_data.get_custom_data("Petunjuk")
-	tanda_tanya.visible = (nilai_petunjuk == true)
+	if nilai_petunjuk == null:
+		return 0
+
+	return int(nilai_petunjuk)
+
+# =========================
+# HIDE SYSTEM
+# =========================
+
+func get_hide_tile_data() -> Dictionary:
+	if hide_object == null:
+		return {}
+
+	var local_pos = hide_object.to_local(detector.global_position)
+	var tile_pos = hide_object.local_to_map(local_pos)
+	var tile_data = hide_object.get_cell_tile_data(tile_pos)
+
+	if tile_data == null:
+		return {}
+
+	var hideable = tile_data.get_custom_data("Hideable")
+	var group_id = tile_data.get_custom_data("HideGroup")
+
+	return {
+		"tile_pos": tile_pos,
+		"hideable": hideable == true,
+		"group_id": int(group_id) if group_id != null else -1
+	}
+
+func get_all_tiles_in_hide_group(center_tile: Vector2i, group_id: int, radius: int = HIDE_GROUP_SCAN_RADIUS) -> Array[Vector2i]:
+	var results: Array[Vector2i] = []
+
+	if hide_object == null or group_id < 0:
+		return results
+
+	for x in range(center_tile.x - radius, center_tile.x + radius + 1):
+		for y in range(center_tile.y - radius, center_tile.y + radius + 1):
+			var pos = Vector2i(x, y)
+			var tile_data = hide_object.get_cell_tile_data(pos)
+
+			if tile_data == null:
+				continue
+
+			var hideable = tile_data.get_custom_data("Hideable")
+			var other_group = tile_data.get_custom_data("HideGroup")
+
+			if hideable == true and other_group != null and int(other_group) == group_id:
+				results.append(pos)
+
+	return results
+
+func enter_hide() -> void:
+	if is_hiding:
+		return
+
+	var data := get_hide_tile_data()
+	if data.is_empty():
+		debug_hide("gagal hide: tile tidak ditemukan")
+		return
+
+	if !data["hideable"]:
+		debug_hide("gagal hide: tile bukan hideable")
+		return
+
+	var tile_pos: Vector2i = data["tile_pos"]
+	var group_id: int = data["group_id"]
+
+	if group_id < 0:
+		debug_hide("gagal hide: HideGroup belum diisi")
+		return
+
+	current_hide_tiles = get_all_tiles_in_hide_group(tile_pos, group_id)
+
+	if current_hide_tiles.is_empty():
+		debug_hide("gagal hide: tile group tidak ketemu")
+		return
+
+	is_hiding = true
+	hide_timer = HIDE_LIMIT
+	current_hide_group = group_id
+
+	velocity = Vector2.ZERO
+	tanda_tanya.visible = false
+
+	if collision_shape != null:
+		collision_shape.disabled = true
+
+	if step_sound.playing:
+		step_sound.stop()
+
+	if sprite != null:
+		sprite.play("hide")
+		await sprite.animation_finished
+
+	visible = false
+
+	debug_hide("masuk hide | group=" + str(current_hide_group) + " | total_tiles=" + str(current_hide_tiles.size()))
+func exit_hide() -> void:
+	if !is_hiding:
+		return
+
+	is_hiding = false
+	hide_timer = 0.0
+	current_hide_group = -1
+	current_hide_tiles.clear()
+
+	visible = true
+
+	if collision_shape != null:
+		collision_shape.disabled = false
+
+	debug_hide("keluar hide")
+
+func break_hide_object() -> void:
+	if hide_object == null:
+		exit_hide()
+		return
+
+	debug_hide("objek pecah | group=" + str(current_hide_group))
+
+	for tile_pos in current_hide_tiles:
+		hide_object.erase_cell(tile_pos)
+
+	exit_hide()
+
+func update_hide_state(delta: float) -> void:
+	if !is_hiding:
+		return
+
+	hide_timer -= delta
+
+	if hide_timer <= 0.0:
+		break_hide_object()
+
+func debug_hide(message: String) -> void:
+	if debug_hide_enabled:
+		print("[HIDE DEBUG] " + message)
+
+# =========================
+# COMBAT / UI
+# =========================
 
 func shoot() -> void:
+	var ui = get_ui()
+	if ui != null and ui.is_dokumen_open():
+		return
+	if is_hiding:
+		return
 	if !can_shoot:
 		return
 	if is_reloading:
@@ -159,6 +361,11 @@ func shoot() -> void:
 	can_shoot = true
 
 func reload_weapon() -> void:
+	var ui = get_ui()
+	if ui != null and ui.is_dokumen_open():
+		return
+	if is_hiding:
+		return
 	if is_reloading:
 		return
 	if ammo == MAX_AMMO:
@@ -186,7 +393,7 @@ func show_floating_text(text_value: String, color: Color = Color.WHITE) -> void:
 
 func add_score(amount: int) -> void:
 	total_score += amount
-	print("TOTAL SCORE:", total_score)
-	var ui = get_tree().current_scene.get_node("Menu Pause")
-	if ui and ui.has_method("set_score"):
+
+	var ui = get_ui()
+	if ui != null and ui.has_method("set_score"):
 		ui.set_score(total_score)

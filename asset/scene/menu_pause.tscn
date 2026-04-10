@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cxj0wpneuc1ad"]
 
 [ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="1_lr5s8"]
-[ext_resource type="Script" uid="uid://cg2dct0uur5m7" path="res://asset/scene/menu_pause.gd" id="1_qe8k7"]
+[ext_resource type="Script" uid="uid://bcb3nfjo7fr57" path="res://asset/scene/menu_pause.gd" id="1_qe8k7"]
+[ext_resource type="Texture2D" uid="uid://c7otynj6121oa" path="res://asset/PNG-Single Sheet-02.png" id="3_43ova"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lr5s8"]
 bg_color = Color(0, 0, 0, 1)
@@ -80,5 +81,79 @@ theme_override_font_sizes/font_size = 32
 text = "000"
 autowrap_mode = 3
 
+[node name="CanvasLayer3" type="CanvasLayer" parent="." unique_id=1581536999]
+
+[node name="DokumenPanel" type="Control" parent="CanvasLayer3" unique_id=17282200]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Kertas" type="Sprite2D" parent="CanvasLayer3/DokumenPanel" unique_id=131253897]
+position = Vector2(11, -20)
+scale = Vector2(0.88819456, 0.88819444)
+texture = ExtResource("3_43ova")
+
+[node name="Kembali" type="Button" parent="CanvasLayer3/DokumenPanel" unique_id=364911075]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -141.0
+offset_top = 191.0
+offset_right = 153.0
+offset_bottom = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_lr5s8")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_lr5s8")
+text = "Kembali"
+
+[node name="Isi Teks Dokuemen" type="RichTextLabel" parent="CanvasLayer3/DokumenPanel" unique_id=1200834145]
+custom_minimum_size = Vector2(0.06, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -203.0
+offset_right = 126.0
+offset_bottom = 162.24084
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.09239707, 0.09239706, 0.09239706, 1)
+theme_override_constants/line_separation = 5
+theme_override_constants/paragraph_separation = 3
+theme_override_constants/strikethrough_alpha = 53
+theme_override_constants/table_h_separation = 8
+theme_override_fonts/normal_font = ExtResource("1_lr5s8")
+bbcode_enabled = true
+text = "Kepada seluruh staf Divisi Penelitian Lapangan
+
+Mulai hari ini, akses ke sayap bawah tanah dibatasi hanya untuk personel Level-3 ke atas. Segala bentuk sampel biologis dari Site Luar harus dikirim ke Lab Analitik tanpa pengecualian.
+
+Beberapa staf melaporkan suara aneh dari ruang penyimpanan kargo pada malam hari. Manajemen meminta semua personel berhenti menyebarkan rumor yang tidak berdasar.
+
+Jika Anda menemukan material organik tak dikenal, jangan disentuh langsung. Hubungi tim biohazard.
+
+— Administrasi Fasilitas"
+autowrap_mode = 1
+justification_flags = 227
+
 [connection signal="pressed" from="CanvasLayer/Control/lanjut" to="." method="on_press_lanjut"]
 [connection signal="pressed" from="CanvasLayer/Control/keluar" to="." method="on_press_keluar"]
+[connection signal="pressed" from="CanvasLayer3/DokumenPanel/Kembali" to="." method="close_dokumen"]

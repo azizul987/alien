@@ -253,7 +253,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_606se")
 }],
-"loop": true,
+"loop": false,
 "name": &"hide",
 "speed": 5.0
 }]
@@ -277,10 +277,8 @@ script = ExtResource("1_1jxqw")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot" unique_id=1289840950]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_d13ii")
-animation = &"Shoot"
+animation = &"hide"
 autoplay = "Idle"
-frame = 3
-frame_progress = 1.0
 
 [node name="GunPoint" type="Marker2D" parent="Pivot" unique_id=1735624291]
 position = Vector2(1, -6)
