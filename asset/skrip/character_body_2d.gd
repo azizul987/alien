@@ -2,11 +2,14 @@ extends CharacterBody2D
 
 const SPEED := 250.0
 const FIRE_RATE := 0.5
-const MAX_AMMO := 7
+const MAX_AMMO := 4
 const RELOAD_TIME := 1.0
 const RELOAD_REMINDER_INTERVAL := 0.5
 const HIDE_LIMIT := 3
 const HIDE_GROUP_SCAN_RADIUS := 3
+
+const TANDA_SWAP_DURATION := 0.5
+const TANDA_RELOAD_DURATION := 0.5
 
 @onready var detector: Node2D = $TileDetector
 @onready var sprite: AnimatedSprite2D = $Pivot/AnimatedSprite2D
@@ -19,6 +22,9 @@ const HIDE_GROUP_SCAN_RADIUS := 3
 @onready var hide_object: TileMapLayer = $"../HideObject"
 @onready var tanda_tanya: Node2D = $"Tanda Tanya"
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
+@onready var tanda_peluru: CanvasItem = $"Tanda Peluru"
+@onready var tanda_bius: CanvasItem = $"Tanda Bius"
 
 var bullet_scene = preload("res://asset/node/bullet_tscn.tscn")
 const FLOATING_DAMAGE_TEXT_TSCN = preload("uid://bucnhf80vdpqa")
@@ -44,8 +50,18 @@ var current_hide_group: int = -1
 var current_hide_tiles: Array[Vector2i] = []
 var debug_hide_enabled: bool = true
 
+# ===== TANDA SYSTEM =====
+var tanda_request_id: int = 0
+
+var is_game_over := false
+
 func _ready() -> void:
 	tanda_tanya.visible = false
+
+	if tanda_peluru != null:
+		tanda_peluru.visible = false
+	if tanda_bius != null:
+		tanda_bius.visible = false
 
 func _physics_process(delta: float) -> void:
 	var ui = get_ui()
@@ -110,7 +126,7 @@ func _physics_process(delta: float) -> void:
 		reload_weapon()
 
 	if Input.is_action_just_pressed("swap_weapon"):
-		use_tranq = !use_tranq
+		swap_weapon()
 
 	if Input.is_action_just_pressed("toggle_kacamata"):
 		is_using_kacamata = !is_using_kacamata
@@ -267,6 +283,7 @@ func enter_hide() -> void:
 	visible = false
 
 	debug_hide("masuk hide | group=" + str(current_hide_group) + " | total_tiles=" + str(current_hide_tiles.size()))
+
 func exit_hide() -> void:
 	if !is_hiding:
 		return
@@ -307,6 +324,44 @@ func update_hide_state(delta: float) -> void:
 func debug_hide(message: String) -> void:
 	if debug_hide_enabled:
 		print("[HIDE DEBUG] " + message)
+
+# =========================
+# TANDA SYSTEM
+# =========================
+
+func hide_all_tanda() -> void:
+	if tanda_peluru != null:
+		tanda_peluru.visible = false
+	if tanda_bius != null:
+		tanda_bius.visible = false
+
+func show_tanda_temporarily(target: CanvasItem, duration: float) -> void:
+	if target == null:
+		return
+
+	tanda_request_id += 1
+	var current_id := tanda_request_id
+
+	hide_all_tanda()
+	target.visible = true
+
+	await get_tree().create_timer(duration).timeout
+
+	if current_id == tanda_request_id and target != null:
+		target.visible = false
+
+func swap_weapon() -> void:
+	if is_reloading:
+		return
+	if is_hiding:
+		return
+
+	use_tranq = !use_tranq
+
+	if use_tranq:
+		show_tanda_temporarily(tanda_bius, TANDA_SWAP_DURATION)
+	else:
+		show_tanda_temporarily(tanda_peluru, TANDA_SWAP_DURATION)
 
 # =========================
 # COMBAT / UI
@@ -375,6 +430,8 @@ func reload_weapon() -> void:
 	sprite.play("Idle")
 	show_floating_text("RELOADING...", Color.WHITE)
 
+	show_tanda_temporarily(tanda_peluru, TANDA_RELOAD_DURATION)
+
 	await get_tree().create_timer(RELOAD_TIME).timeout
 	ammo = MAX_AMMO
 	is_reloading = false
@@ -397,3 +454,12 @@ func add_score(amount: int) -> void:
 	var ui = get_ui()
 	if ui != null and ui.has_method("set_score"):
 		ui.set_score(total_score)
+
+func game_over():
+	if is_game_over:
+		return
+	is_game_over = true
+	can_shoot = false
+	is_reloading = false
+	is_shooting = false
+	get_tree().reload_current_scene()

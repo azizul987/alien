@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://d4nnpray7vrr" path="res://door.png" id="9_n7ghd"]
 [ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="10_nvl01"]
 [ext_resource type="Texture2D" uid="uid://cfachs0u8hnaq" path="res://asset/Tanda Tanya.png" id="12_ivps1"]
+[ext_resource type="Texture2D" uid="uid://s2v682gu17lm" path="res://asset/image/peluru.png" id="13_bwjto"]
+[ext_resource type="Texture2D" uid="uid://bee06sbctoi3c" path="res://asset/image/bius.png" id="14_606se"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
 atlas = ExtResource("2_dw050")
@@ -142,7 +144,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_efxa6")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 5.0
 }, {
@@ -268,6 +270,14 @@ radius = 17.117243
 text = "Pencet E"
 font = ExtResource("10_nvl01")
 
+[sub_resource type="TextMesh" id="TextMesh_u1c27"]
+text = "Ganti Ke Peluru"
+font = ExtResource("10_nvl01")
+
+[sub_resource type="TextMesh" id="TextMesh_op7ga"]
+text = "Ganti Ke Bius"
+font = ExtResource("10_nvl01")
+
 [node name="Player" type="CharacterBody2D" unique_id=1445277376 groups=["player"]]
 scale = Vector2(2, 2)
 script = ExtResource("1_1jxqw")
@@ -277,7 +287,7 @@ script = ExtResource("1_1jxqw")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot" unique_id=1289840950]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_d13ii")
-animation = &"Idle"
+animation = &"Death"
 autoplay = "Idle"
 
 [node name="GunPoint" type="Marker2D" parent="Pivot" unique_id=1735624291]
@@ -335,12 +345,45 @@ scale = Vector2(20.591593, -26.886143)
 mesh = SubResource("TextMesh_ivps1")
 
 [node name="Tanda Tanya" type="Node2D" parent="." unique_id=617260039]
+visible = false
 position = Vector2(0, -15)
+
+[node name="Text2" type="MeshInstance2D" parent="Tanda Tanya" unique_id=675586388]
+position = Vector2(0.5000005, -7)
+scale = Vector2(20.591593, -25.52083)
+mesh = SubResource("TextMesh_ivps1")
 
 [node name="TandaTanya" type="Sprite2D" parent="Tanda Tanya" unique_id=1610620904]
 position = Vector2(1, -3)
 scale = Vector2(0.40625, 0.40625)
 texture = ExtResource("12_ivps1")
+
+[node name="Tanda Peluru" type="Node2D" parent="." unique_id=1142662632]
+position = Vector2(0, -15)
+
+[node name="Text2" type="MeshInstance2D" parent="Tanda Peluru" unique_id=800645870]
+position = Vector2(0.5000005, -7)
+scale = Vector2(20.591593, -25.52083)
+mesh = SubResource("TextMesh_u1c27")
+
+[node name="TandaTanya" type="Sprite2D" parent="Tanda Peluru" unique_id=424514614]
+position = Vector2(1, -3)
+scale = Vector2(0.40625, 0.40625)
+texture = ExtResource("13_bwjto")
+
+[node name="Tanda Bius" type="Node2D" parent="." unique_id=2077081423]
+visible = false
+position = Vector2(0, -15)
+
+[node name="Text2" type="MeshInstance2D" parent="Tanda Bius" unique_id=1967952817]
+position = Vector2(0.5000005, -7)
+scale = Vector2(20.591593, -25.52083)
+mesh = SubResource("TextMesh_op7ga")
+
+[node name="TandaTanya" type="Sprite2D" parent="Tanda Bius" unique_id=1261865677]
+position = Vector2(1, -3)
+scale = Vector2(0.40625, 0.40625)
+texture = ExtResource("14_606se")
 
 [connection signal="body_entered" from="Deteksi" to="Deteksi" method="_on_body_entered"]
 [connection signal="body_exited" from="Deteksi" to="Deteksi" method="_on_body_exited"]

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cifs6o5ot870u"]
 
 [ext_resource type="Script" uid="uid://dhk6w86jr3l6g" path="res://asset/skrip/main_menu.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="2_1yvoj"]
 [ext_resource type="AudioStream" uid="uid://cqvacmbhjaofm" path="res://asset/music/snap.wav" id="2_fcj41"]
 [ext_resource type="AudioStream" uid="uid://0adnun1q623n" path="res://asset/music/backsound.wav" id="3_unqx1"]
 
@@ -36,6 +37,7 @@ layout_mode = 2
 
 [node name="LabelPressAny" type="Label" parent="MarginContainer/VBox" unique_id=912929265]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_1yvoj")
 theme_override_font_sizes/font_size = 24
 text = "Press Any Key / Button to Start"
 horizontal_alignment = 1
@@ -49,6 +51,7 @@ offset_top = 40.0
 offset_right = 1112.0
 offset_bottom = 486.0
 size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_1yvoj")
 theme_override_font_sizes/font_size = 72
 text = "ALIEN"
 horizontal_alignment = 1

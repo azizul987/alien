@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cfs4plb1axu8u"]
+
+[ext_resource type="Script" uid="uid://co8x2lfjlwu0b" path="res://kalah.gd" id="1_85dp1"]
+[ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="2_ae1t5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hmlbd"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+
+[node name="Kalah" type="CanvasLayer" unique_id=5724392]
+script = ExtResource("1_85dp1")
+
+[node name="Control" type="Control" parent="." unique_id=741144389]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control" unique_id=1592256648]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelTitle" type="Label" parent="Control/Panel" unique_id=1145255934]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 1112.0
+offset_bottom = 486.0
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_ae1t5")
+theme_override_font_sizes/font_size = 72
+text = "KAmu Kalah 
+WKWKWKWKWKWKWKKWKW"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="keluar" type="Button" parent="Control/Panel" unique_id=585021665]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -158.0
+offset_top = 76.0
+offset_right = 136.0
+offset_bottom = 127.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_ae1t5")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_hmlbd")
+text = "Keluar"
+
+[connection signal="pressed" from="Control/Panel/keluar" to="." method="_on_keluar_pressed"]
