@@ -5,7 +5,9 @@ const FIRE_RATE := 0.5
 const MAX_AMMO := 4
 const RELOAD_TIME := 1.0
 const RELOAD_REMINDER_INTERVAL := 0.5
-const HIDE_LIMIT := 3
+
+const HIDE_PER_USE_DURATION := 2.0
+const DEFAULT_HIDE_TOTAL_DURATION := 6.0
 const HIDE_GROUP_SCAN_RADIUS := 3
 
 const TANDA_SWAP_DURATION := 0.5
@@ -49,6 +51,8 @@ var hide_timer: float = 0.0
 var current_hide_group: int = -1
 var current_hide_tiles: Array[Vector2i] = []
 var debug_hide_enabled: bool = true
+var hide_group_used_time: Dictionary = {}
+var hide_group_total_time: Dictionary = {}
 
 # ===== TANDA SYSTEM =====
 var tanda_request_id: int = 0
@@ -208,11 +212,13 @@ func get_hide_tile_data() -> Dictionary:
 
 	var hideable = tile_data.get_custom_data("Hideable")
 	var group_id = tile_data.get_custom_data("HideGroup")
+	var hide_total_duration = tile_data.get_custom_data("HideDuration")
 
 	return {
 		"tile_pos": tile_pos,
 		"hideable": hideable == true,
-		"group_id": int(group_id) if group_id != null else -1
+		"group_id": int(group_id) if group_id != null else -1,
+		"hide_total_duration": float(hide_total_duration) if hide_total_duration != null else DEFAULT_HIDE_TOTAL_DURATION
 	}
 
 func get_all_tiles_in_hide_group(center_tile: Vector2i, group_id: int, radius: int = HIDE_GROUP_SCAN_RADIUS) -> Array[Vector2i]:
@@ -237,6 +243,11 @@ func get_all_tiles_in_hide_group(center_tile: Vector2i, group_id: int, radius: i
 
 	return results
 
+func reset_all_aliens_to_normal() -> void:
+	for node in get_tree().get_nodes_in_group("alien"):
+		if node != null and node.has_method("reset_to_normal_mode"):
+			node.reset_to_normal_mode()
+
 func enter_hide() -> void:
 	if is_hiding:
 		return
@@ -252,6 +263,7 @@ func enter_hide() -> void:
 
 	var tile_pos: Vector2i = data["tile_pos"]
 	var group_id: int = data["group_id"]
+	var total_duration: float = data["hide_total_duration"]
 
 	if group_id < 0:
 		debug_hide("gagal hide: HideGroup belum diisi")
@@ -263,8 +275,21 @@ func enter_hide() -> void:
 		debug_hide("gagal hide: tile group tidak ketemu")
 		return
 
+	if !hide_group_total_time.has(group_id):
+		hide_group_total_time[group_id] = total_duration
+
+	if !hide_group_used_time.has(group_id):
+		hide_group_used_time[group_id] = 0.0
+
+	var sisa_total: float = hide_group_total_time[group_id] - hide_group_used_time[group_id]
+
+	if sisa_total <= 0.0:
+		debug_hide("objek hide sudah habis total waktunya | group=" + str(group_id))
+		break_hide_tiles_by_group(group_id, tile_pos)
+		return
+
 	is_hiding = true
-	hide_timer = HIDE_LIMIT
+	hide_timer = min(HIDE_PER_USE_DURATION, sisa_total)
 	current_hide_group = group_id
 
 	velocity = Vector2.ZERO
@@ -276,13 +301,20 @@ func enter_hide() -> void:
 	if step_sound.playing:
 		step_sound.stop()
 
+	reset_all_aliens_to_normal()
+
 	if sprite != null:
 		sprite.play("hide")
 		await sprite.animation_finished
 
 	visible = false
 
-	debug_hide("masuk hide | group=" + str(current_hide_group) + " | total_tiles=" + str(current_hide_tiles.size()))
+	debug_hide(
+		"masuk hide | group=" + str(current_hide_group) +
+		" | dipakai=" + str(hide_group_used_time[group_id]) +
+		" | total=" + str(hide_group_total_time[group_id]) +
+		" | sesi=" + str(hide_timer)
+	)
 
 func exit_hide() -> void:
 	if !is_hiding:
@@ -299,6 +331,15 @@ func exit_hide() -> void:
 		collision_shape.disabled = false
 
 	debug_hide("keluar hide")
+
+func break_hide_tiles_by_group(group_id: int, center_tile: Vector2i) -> void:
+	if hide_object == null:
+		return
+
+	var tiles := get_all_tiles_in_hide_group(center_tile, group_id)
+
+	for tile_pos in tiles:
+		hide_object.erase_cell(tile_pos)
 
 func break_hide_object() -> void:
 	if hide_object == null:
@@ -318,8 +359,21 @@ func update_hide_state(delta: float) -> void:
 
 	hide_timer -= delta
 
+	if current_hide_group >= 0:
+		if !hide_group_used_time.has(current_hide_group):
+			hide_group_used_time[current_hide_group] = 0.0
+
+		hide_group_used_time[current_hide_group] += delta
+
+		var total_limit: float = hide_group_total_time.get(current_hide_group, DEFAULT_HIDE_TOTAL_DURATION)
+
+		if hide_group_used_time[current_hide_group] >= total_limit:
+			hide_group_used_time[current_hide_group] = total_limit
+			break_hide_object()
+			return
+
 	if hide_timer <= 0.0:
-		break_hide_object()
+		exit_hide()
 
 func debug_hide(message: String) -> void:
 	if debug_hide_enabled:
@@ -457,8 +511,7 @@ func add_score(amount: int) -> void:
 
 func get_score() -> int:
 	return total_score
-	
-	
+
 func game_over():
 	if is_game_over:
 		return

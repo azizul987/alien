@@ -19,6 +19,7 @@ config/icon="res://asset/image/icon.svg"
 
 player=""
 pintu=""
+alien=""
 
 [input]
 

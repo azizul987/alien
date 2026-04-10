@@ -18,6 +18,7 @@ extends CharacterBody2D
 var target_pos: Vector2
 var left_pos: Vector2
 var right_pos: Vector2
+var spawn_position: Vector2
 
 var jejak_scene = preload("res://asset/scene/jejak.tscn")
 const FLOATING_DAMAGE_TEXT_TSCN = preload("uid://bucnhf80vdpqa")
@@ -36,6 +37,7 @@ func _ready() -> void:
 	right_pos = kanan.global_position
 	target_pos = right_pos
 	current_chase_speed = chase_speed
+	spawn_position = global_position
 
 	var players = get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
@@ -57,7 +59,6 @@ func take_damage(amount: int, attacker = null) -> void:
 			return
 
 		die(attacker)
-		
 	else:
 		die(attacker)
 
@@ -72,7 +73,28 @@ func enter_alien_mode() -> void:
 	if animasi.sprite_frames.has_animation("Alien"):
 		animasi.play("Alien")
 		$"Suara Ngejar".play()
-	
+
+func reset_to_normal_mode() -> void:
+	if is_dead:
+		return
+
+	is_alien_mode = false
+	isMoving = true
+	current_chase_speed = chase_speed
+	velocity = Vector2.ZERO
+	global_position = spawn_position
+	target_pos = right_pos
+	has_triggered_game_over = false
+
+	if $"Suara Ngejar".playing:
+		$"Suara Ngejar".stop()
+
+	if animasi != null:
+		if animasi.sprite_frames.has_animation("Idle"):
+			animasi.play("Idle")
+		elif animasi.sprite_frames.has_animation("Run"):
+			animasi.play("Run")
+
 func die(attacker = null) -> void:
 	if is_dead:
 		return
@@ -80,6 +102,9 @@ func die(attacker = null) -> void:
 	is_dead = true
 	isMoving = false
 	velocity = Vector2.ZERO
+
+	if $"Suara Ngejar".playing:
+		$"Suara Ngejar".stop()
 
 	if isJahat:
 		show_floating_text("+" + str(score_value), get_random_floating_color())
@@ -93,7 +118,7 @@ func die(attacker = null) -> void:
 		else:
 			show_floating_text("-" + str(score_value), Color.RED)
 			attacker.add_score(-score_value)
-		
+
 	if animasi.sprite_frames.has_animation("Death"):
 		animasi.play("Death")
 		await animasi.animation_finished
@@ -161,7 +186,7 @@ func check_player_collision() -> void:
 			if collider.has_method("game_over"):
 				collider.game_over()
 			else:
-				get_tree().reload_current_scene()
+				get_tree().change_scene_to_file("res://kalah.tscn")
 
 			return
 
