@@ -9,7 +9,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if(Input.is_action_just_pressed("interact") and near_door):
-		near_door. open_or_close()
+		near_door.coba_buka_pintu()
 		
 
 

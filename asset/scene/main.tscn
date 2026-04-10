@@ -2639,8 +2639,10 @@ position = Vector2(545, 70)
 [node name="Pintu" parent="Kumpulan Pintu" unique_id=748224768 instance=ExtResource("11_i2twx")]
 
 [node name="Pintu15" parent="Kumpulan Pintu" unique_id=1767028295 instance=ExtResource("11_i2twx")]
-position = Vector2(857, -68)
+position = Vector2(857, -69)
 rotation = 1.5707964
+perlu_skor = true
+skor_minimum = 1104
 
 [node name="Pintu2" parent="Kumpulan Pintu" unique_id=2027620058 instance=ExtResource("11_i2twx")]
 position = Vector2(256, 0)

@@ -455,6 +455,10 @@ func add_score(amount: int) -> void:
 	if ui != null and ui.has_method("set_score"):
 		ui.set_score(total_score)
 
+func get_score() -> int:
+	return total_score
+	
+	
 func game_over():
 	if is_game_over:
 		return
