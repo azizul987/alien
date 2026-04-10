@@ -2,12 +2,12 @@ extends CharacterBody2D
 
 @export var isMoving: bool = true
 @export var speed: float = 38.0
-@export var chase_speed: float = 230.0
-@export var chase_acceleration: float = 12.0
-@export var max_chase_speed: float = 320.0
+@export var chase_speed: float = 170.0
+@export var chase_acceleration: float = 30.0
+@export var max_chase_speed: float = 350.0
 @export var isJahat: bool = true
 @export var score_value: int = 100
-@export var max_hp: int = 3
+@export var max_hp: int = 8
 
 @onready var kiri: Marker2D = $Kiri
 @onready var kanan: Marker2D = $Kanan
@@ -45,17 +45,21 @@ func take_damage(amount: int, attacker = null) -> void:
 	if is_dead:
 		return
 
-	current_hp -= amount
-	current_hp = max(current_hp, 0)
+	if isJahat:
+		current_hp -= amount
+		current_hp = max(current_hp, 0)
 
-	if current_hp > 0:
-		show_floating_text("-" + str(current_hp), Color.RED)
+		if current_hp > 0:
+			show_floating_text("-" + str(amount), Color.RED)
 
-		if isJahat:
-			enter_alien_mode()
-		return
+			if isJahat:
+				enter_alien_mode()
+			return
 
-	die(attacker)
+		die(attacker)
+		
+	else:
+		die(attacker)
 
 func enter_alien_mode() -> void:
 	if is_alien_mode:
@@ -82,7 +86,14 @@ func die(attacker = null) -> void:
 
 		if attacker != null and attacker.has_method("add_score"):
 			attacker.add_score(score_value)
-
+	else:
+		if attacker.use_tranq:
+			show_floating_text("+" + str(score_value), get_random_floating_color())
+			attacker.add_score(score_value)
+		else:
+			show_floating_text("-" + str(score_value), Color.RED)
+			attacker.add_score(-score_value)
+		
 	if animasi.sprite_frames.has_animation("Death"):
 		animasi.play("Death")
 		await animasi.animation_finished
@@ -204,7 +215,6 @@ func show_floating_text(text_value: String, color: Color = Color.WHITE) -> void:
 
 func get_random_floating_color() -> Color:
 	var colors := [
-		Color.RED,
 		Color.YELLOW,
 		Color.GREEN,
 		Color.CYAN,

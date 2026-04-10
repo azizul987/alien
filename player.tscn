@@ -277,7 +277,7 @@ script = ExtResource("1_1jxqw")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot" unique_id=1289840950]
 position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_d13ii")
-animation = &"hide"
+animation = &"Idle"
 autoplay = "Idle"
 
 [node name="GunPoint" type="Marker2D" parent="Pivot" unique_id=1735624291]
@@ -310,7 +310,7 @@ script = ExtResource("6_ivps1")
 tilemap_layer_path = NodePath("../../Furniture")
 
 [node name="kacamata" type="PointLight2D" parent="." unique_id=1023313814]
-position = Vector2(4.5, -10.999999)
+position = Vector2(0.50000006, -11.5)
 scale = Vector2(1, 0.94921875)
 enabled = false
 color = Color(0.8377902, 0, 0.37978473, 0.99215686)

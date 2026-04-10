@@ -348,7 +348,7 @@ func shoot() -> void:
 		bullet.damage = 1
 	else:
 		bullet.bullet_color = Color.YELLOW
-		bullet.damage = 1
+		bullet.damage = 2
 
 	show_floating_text("-" + str(ammo), Color.DODGER_BLUE)
 
