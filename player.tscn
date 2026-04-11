@@ -390,6 +390,7 @@ scale = Vector2(0.40625, 0.40625)
 texture = ExtResource("14_606se")
 
 [node name="Tanda Sembunyi" type="Node2D" parent="." unique_id=1667962169]
+visible = false
 position = Vector2(0, -15)
 
 [node name="Text2" type="MeshInstance2D" parent="Tanda Sembunyi" unique_id=2033550086]

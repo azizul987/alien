@@ -13,7 +13,7 @@ extends CharacterBody2D
 
 @export var isJahat: bool = true
 @export var score_value: int = 100
-@export var max_hp: int = 40
+@export var max_hp: int = 30
 @export var isBoss: bool = false
 @export var spawned_direct_chase: bool = false
 

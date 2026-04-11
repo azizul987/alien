@@ -34,7 +34,7 @@ func get_enemy_speed_multiplier() -> float:
 func get_enemy_chase_multiplier() -> float:
 	match selected_difficulty:
 		Difficulty.EASY:
-			return 0.5
+			return 0.8
 		Difficulty.NORMAL:
 			return 1.0
 		Difficulty.HARD:
@@ -44,7 +44,7 @@ func get_enemy_chase_multiplier() -> float:
 func get_enemy_max_speed_multiplier() -> float:
 	match selected_difficulty:
 		Difficulty.EASY:
-			return 0.9
+			return 0.8
 		Difficulty.NORMAL:
 			return 1.0
 		Difficulty.HARD:

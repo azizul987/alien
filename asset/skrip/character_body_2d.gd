@@ -455,20 +455,13 @@ func hide_all_tanda() -> void:
 	if tanda_bius != null:
 		tanda_bius.visible = false
 
-func show_tanda_temporarily(target: CanvasItem, duration: float) -> void:
-	if target == null:
-		return
-
+func show_tanda_temporarily(duration: float) -> void:
 	tanda_request_id += 1
 	var current_id := tanda_request_id
 
 	hide_all_tanda()
-	target.visible = true
 
 	await get_tree().create_timer(duration).timeout
-
-	if current_id == tanda_request_id and target != null:
-		target.visible = false
 
 #func swap_weapon() -> void:
 	#if is_reloading or is_hiding or is_game_over:
@@ -554,7 +547,7 @@ func reload_weapon() -> void:
 	sprite.play("Idle")
 	show_floating_text("RELOADING...", Color.WHITE)
 
-	show_tanda_temporarily(tanda_peluru, TANDA_RELOAD_DURATION)
+	show_tanda_temporarily(TANDA_RELOAD_DURATION)
 
 	await get_tree().create_timer(RELOAD_TIME).timeout
 
