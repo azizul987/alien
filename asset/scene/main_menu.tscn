@@ -43,13 +43,23 @@ text = "Press Any Key / Button to Start"
 horizontal_alignment = 1
 vertical_alignment = 2
 
+[node name="LabelDifficulty" type="Label" parent="MarginContainer/VBox" unique_id=1473611233]
+layout_mode = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=353563988]
 
 [node name="LabelTitle" type="Label" parent="." unique_id=1038552049]
-offset_left = 40.0
-offset_top = 40.0
-offset_right = 1112.0
-offset_bottom = 486.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -536.0
+offset_top = -223.0
+offset_right = 536.0
+offset_bottom = 223.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_1yvoj")
 theme_override_font_sizes/font_size = 72

@@ -3,12 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://b4omjbiu70xka" path="res://asset/tile/1_Terrains_32x32.png" id="1_327n2"]
 [ext_resource type="Texture2D" uid="uid://cb56vmggv4m0t" path="res://asset/image/Room_Builder_free_32x32.png" id="1_aihg7"]
 [ext_resource type="PackedScene" uid="uid://b031cwptlf5ke" path="res://player.tscn" id="2_6c4ff"]
+[ext_resource type="PackedScene" uid="uid://dmyq5ykf8rhqt" path="res://asset/scene/enemy1.tscn" id="3_u7qqg"]
 [ext_resource type="TileSet" uid="uid://cegrlwbcoi7me" path="res://tileset/babak1.tres" id="5_fqopk"]
 [ext_resource type="TileSet" uid="uid://gcnfljvjnf2t" path="res://HideObjek.tres" id="6_nfdib"]
 [ext_resource type="PackedScene" uid="uid://cxj0wpneuc1ad" path="res://asset/scene/menu_pause.tscn" id="7_p5ssj"]
 [ext_resource type="AudioStream" uid="uid://0adnun1q623n" path="res://asset/music/backsound.wav" id="8_35ody"]
 [ext_resource type="PackedScene" uid="uid://cj6yuuxcxvp0h" path="res://asset/scene/Alien.tscn" id="9_6wla8"]
 [ext_resource type="Script" uid="uid://bgnj2xknm0mii" path="res://asset/skrip/jejak.gd" id="10_mwi46"]
+[ext_resource type="Script" uid="uid://cdbx8bwgskl1p" path="res://asset/scene/win_area.gd" id="11_aihg7"]
 [ext_resource type="PackedScene" uid="uid://bcu165qjdfqt2" path="res://asset/scene/pintu.tscn" id="11_i2twx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aihg7"]
@@ -693,7 +695,7 @@ sources/0 = SubResource("TileSetAtlasSource_aihg7")
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lquwl"]
 load_path = "res://.godot/imported/Interiors_free_32x32.png-ae6020aa6efd10dccf5dfb1062b5622d.ctex"
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5ssj"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u7qqg"]
 texture = SubResource("CompressedTexture2D_lquwl")
 texture_region_size = Vector2i(32, 32)
 2:19/0 = 0
@@ -731,7 +733,7 @@ texture_region_size = Vector2i(32, 32)
 5:18/0 = 0
 5:18/0/custom_data_2 = 4
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_35ody"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fdmow"]
 texture = ExtResource("1_aihg7")
 texture_region_size = Vector2i(32, 32)
 3:0/0 = 0
@@ -1015,8 +1017,11 @@ custom_data_layer_1/name = "door_id"
 custom_data_layer_1/type = 4
 custom_data_layer_2/name = "Petunjuk"
 custom_data_layer_2/type = 2
-sources/0 = SubResource("TileSetAtlasSource_p5ssj")
-sources/1 = SubResource("TileSetAtlasSource_35ody")
+sources/0 = SubResource("TileSetAtlasSource_u7qqg")
+sources/1 = SubResource("TileSetAtlasSource_fdmow")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7qqg"]
+size = Vector2(66, 108)
 
 [node name="Node2D" type="Node2D" unique_id=1317935392]
 
@@ -1028,33 +1033,14 @@ tile_set = SubResource("TileSet_1bvp3")
 [node name="Petunjuk" type="TileMapLayer" parent="." unique_id=268636364]
 position = Vector2(562, 180)
 scale = Vector2(1.6, 1.6)
-tile_map_data = PackedByteArray("AAADAPf/AAANABwAAAADAPj/AAANAB0AAAAEAPf/AAAOABwAAAAEAPj/AAAOAB0AAAD+//X/AAACABIAAAD+//b/AAACABMAAAD+//f/AAACABQAAADw//f/AAAKACMAAADw//j/AAAKACQAAADy/wIAAAAJACMAAADy/wMAAAAJACQAAAAOAAEAAAAEABIAAAAOAAIAAAAEABMAAAAOAAMAAAAEABQAAAAPAAEAAAAFABIAAAAPAAIAAAAFABMAAAAPAAMAAAAFABQAAADv/wAAAAAJACQAAADv////AAAJACMAAADu/wAAAAAJACMAAAA=")
+tile_map_data = PackedByteArray("AAADAPf/AAANABwAAAADAPj/AAANAB0AAAAEAPf/AAAOABwAAAAEAPj/AAAOAB0AAAD+//X/AAACABIAAAD+//b/AAACABMAAAD+//f/AAACABQAAADw//f/AAAKACMAAADw//j/AAAKACQAAADy/wIAAAAJACMAAADy/wMAAAAJACQAAAAOAAEAAAAEABIAAAAOAAIAAAAEABMAAAAOAAMAAAAEABQAAAAPAAEAAAAFABIAAAAPAAIAAAAFABMAAAAPAAMAAAAFABQAAADv/wAAAAAJACQAAADv////AAAJACMAAAA=")
 tile_set = SubResource("TileSet_327n2")
 
 [node name="Kumpulan Enemy" type="Node2D" parent="." unique_id=1347962761]
 position = Vector2(1, 0)
 
-[node name="enemy" parent="Kumpulan Enemy" unique_id=162389173 instance=ExtResource("9_6wla8")]
-z_index = 1
+[node name="enemy" parent="Kumpulan Enemy" unique_id=178430130 instance=ExtResource("3_u7qqg")]
 position = Vector2(1070, 192)
-scale = Vector2(1.6, 1.6)
-
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy" unique_id=767745115]
-position = Vector2(-16.5, 40.500004)
-
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy" unique_id=2067850318]
-position = Vector2(-20.5, -32.5)
-
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy" unique_id=1298388968]
-position = Vector2(0, 9)
-
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy" unique_id=2041173802]
-position = Vector2(2, 9)
-script = ExtResource("10_mwi46")
-
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy" unique_id=1879786418]
-wait_time = 0.3
-autostart = true
 
 [node name="enemy2" parent="Kumpulan Enemy" unique_id=906714739 instance=ExtResource("9_6wla8")]
 z_index = 1
@@ -1063,20 +1049,20 @@ scale = Vector2(1.6, 1.6)
 isJahat = false
 max_hp = 10
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=586841789]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=586841789]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=2068198458]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=2068198458]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=1385511586]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=1385511586]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=1361418836]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=1361418836]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy2" unique_id=2057695403]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy2" unique_id=2057695403]
 wait_time = 0.3
 autostart = true
 
@@ -1085,20 +1071,20 @@ z_index = 1
 position = Vector2(783, -144.99998)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=2082477912]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=2082477912]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=1336894036]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=1336894036]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=337045497]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=337045497]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=1805310349]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy3" unique_id=1805310349]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy3" unique_id=1386773401]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy3" unique_id=1386773401]
 wait_time = 0.3
 autostart = true
 
@@ -1107,20 +1093,20 @@ z_index = 1
 position = Vector2(1008, -284)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=493552799]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=493552799]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=200510009]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=200510009]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=497923747]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=497923747]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=636108743]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy4" unique_id=636108743]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy4" unique_id=378074651]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy4" unique_id=378074651]
 wait_time = 0.3
 autostart = true
 
@@ -1129,20 +1115,20 @@ z_index = 1
 position = Vector2(1272, -197)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=36421922]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=36421922]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=148290002]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=148290002]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=160482985]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=160482985]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=1313189882]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy5" unique_id=1313189882]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy5" unique_id=1691255637]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy5" unique_id=1691255637]
 wait_time = 0.3
 autostart = true
 
@@ -1151,20 +1137,20 @@ z_index = 1
 position = Vector2(1274, 279.99997)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=1495258986]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=1495258986]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=2057579187]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=2057579187]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=983689012]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=983689012]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=353568929]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy6" unique_id=353568929]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy6" unique_id=1308004603]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy6" unique_id=1308004603]
 wait_time = 0.3
 autostart = true
 
@@ -1173,20 +1159,20 @@ z_index = 1
 position = Vector2(275.00003, 191)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=907339595]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=907339595]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=246419829]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=246419829]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=1271283594]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=1271283594]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=965653267]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy7" unique_id=965653267]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy7" unique_id=420021193]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy7" unique_id=420021193]
 wait_time = 0.3
 autostart = true
 
@@ -1195,20 +1181,20 @@ z_index = 1
 position = Vector2(293, -191.99997)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1491719769]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1491719769]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1901789084]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1901789084]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1262762507]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=1262762507]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=611975520]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy8" unique_id=611975520]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy8" unique_id=430276723]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy8" unique_id=430276723]
 wait_time = 0.3
 autostart = true
 
@@ -1217,20 +1203,20 @@ z_index = 1
 position = Vector2(-12.9999695, -176)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=26297632]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=26297632]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=182348548]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=182348548]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=852175673]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=852175673]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=1139126691]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy9" unique_id=1139126691]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy9" unique_id=1919069340]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy9" unique_id=1919069340]
 wait_time = 0.3
 autostart = true
 
@@ -1239,20 +1225,20 @@ z_index = 1
 position = Vector2(-27, 180.99997)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=812664177]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=812664177]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=363031562]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=363031562]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=770563538]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=770563538]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=1000024654]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy10" unique_id=1000024654]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy10" unique_id=560947482]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy10" unique_id=560947482]
 wait_time = 0.3
 autostart = true
 
@@ -1261,20 +1247,20 @@ z_index = 1
 position = Vector2(603.99994, -351.99997)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=946105183]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=946105183]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=505062215]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=505062215]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=2002524331]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=2002524331]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=1188625120]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=1188625120]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy11" unique_id=430525278]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy11" unique_id=430525278]
 wait_time = 0.3
 autostart = true
 
@@ -1283,20 +1269,20 @@ z_index = 1
 position = Vector2(-301, -191.99997)
 scale = Vector2(1.6, 1.6)
 
-[node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=429284603]
+[node name="Kiri2" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=429284603]
 position = Vector2(53.125008, -4.375)
 
-[node name="Kanan" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=1736482054]
+[node name="Kanan2" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=1736482054]
 position = Vector2(-52.5, -13.750002)
 
-[node name="KakiKiri" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=659861937]
+[node name="KakiKiri2" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=659861937]
 position = Vector2(0, 9)
 
-[node name="KakiKanan" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=634817335]
+[node name="KakiKanan2" type="Marker2D" parent="Kumpulan Enemy/enemy12" unique_id=634817335]
 position = Vector2(2, 9)
 script = ExtResource("10_mwi46")
 
-[node name="Timer" type="Timer" parent="Kumpulan Enemy/enemy12" unique_id=1648893569]
+[node name="Timer2" type="Timer" parent="Kumpulan Enemy/enemy12" unique_id=1648893569]
 wait_time = 0.3
 autostart = true
 
@@ -1309,7 +1295,7 @@ position = Vector2(545, 70)
 position = Vector2(857, -69)
 rotation = 1.5707964
 perlu_skor = true
-skor_minimum = 1104
+skor_minimum = 1000
 
 [node name="Pintu2" parent="Kumpulan Pintu" unique_id=2027620058 instance=ExtResource("11_i2twx")]
 position = Vector2(256, 0)
@@ -1359,8 +1345,12 @@ tile_set = ExtResource("6_nfdib")
 [node name="Player" parent="." unique_id=1445277376 instance=ExtResource("2_6c4ff")]
 position = Vector2(-411, 325)
 
-[node name="Camera2D" parent="Player" index="2" unique_id=2101384287]
+[node name="Camera2D" parent="Player" index="2" unique_id=2101384287 node_paths=PackedStringArray("batas_kiri", "batas_kanan", "batas_atas", "batas_bawah")]
 zoom = Vector2(2.2, 2.2)
+batas_kiri = NodePath("../../batas/Batas kiri")
+batas_kanan = NodePath("../../batas/Batas kanan")
+batas_atas = NodePath("../../batas/Batas atas")
+batas_bawah = NodePath("../../batas/Batas bawah")
 
 [node name="Furniture" type="TileMapLayer" parent="." unique_id=1431226262]
 position = Vector2(1, 0)
@@ -1380,18 +1370,41 @@ offset_bottom = 6.0
 
 [node name="Backround" type="AudioStreamPlayer2D" parent="." unique_id=1209915350]
 stream = ExtResource("8_35ody")
+autoplay = true
 
-[connection signal="timeout" from="Kumpulan Enemy/enemy/Timer" to="Kumpulan Enemy/enemy" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy2/Timer" to="Kumpulan Enemy/enemy2" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy3/Timer" to="Kumpulan Enemy/enemy3" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy4/Timer" to="Kumpulan Enemy/enemy4" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy5/Timer" to="Kumpulan Enemy/enemy5" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy6/Timer" to="Kumpulan Enemy/enemy6" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy7/Timer" to="Kumpulan Enemy/enemy7" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy8/Timer" to="Kumpulan Enemy/enemy8" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy9/Timer" to="Kumpulan Enemy/enemy9" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy10/Timer" to="Kumpulan Enemy/enemy10" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy11/Timer" to="Kumpulan Enemy/enemy11" method="_on_timer_timeout"]
-[connection signal="timeout" from="Kumpulan Enemy/enemy12/Timer" to="Kumpulan Enemy/enemy12" method="_on_timer_timeout"]
+[node name="WIN Area" type="Area2D" parent="." unique_id=2000393858]
+position = Vector2(1424, -21)
+script = ExtResource("11_aihg7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WIN Area" unique_id=2075853982]
+position = Vector2(20, 21)
+shape = SubResource("RectangleShape2D_u7qqg")
+
+[node name="batas" type="Node2D" parent="." unique_id=459014133]
+
+[node name="Batas kanan" type="Marker2D" parent="batas" unique_id=492940033]
+position = Vector2(1613, -1)
+
+[node name="Batas kiri" type="Marker2D" parent="batas" unique_id=1796650806]
+position = Vector2(-834, -3)
+
+[node name="Batas atas" type="Marker2D" parent="batas" unique_id=680833937]
+position = Vector2(426, -594)
+
+[node name="Batas bawah" type="Marker2D" parent="batas" unique_id=197740853]
+position = Vector2(374, 516)
+
+[connection signal="timeout" from="Kumpulan Enemy/enemy2/Timer2" to="Kumpulan Enemy/enemy2" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy3/Timer2" to="Kumpulan Enemy/enemy3" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy4/Timer2" to="Kumpulan Enemy/enemy4" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy5/Timer2" to="Kumpulan Enemy/enemy5" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy6/Timer2" to="Kumpulan Enemy/enemy6" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy7/Timer2" to="Kumpulan Enemy/enemy7" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy8/Timer2" to="Kumpulan Enemy/enemy8" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy9/Timer2" to="Kumpulan Enemy/enemy9" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy10/Timer2" to="Kumpulan Enemy/enemy10" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy11/Timer2" to="Kumpulan Enemy/enemy11" method="_on_timer_timeout"]
+[connection signal="timeout" from="Kumpulan Enemy/enemy12/Timer2" to="Kumpulan Enemy/enemy12" method="_on_timer_timeout"]
+[connection signal="body_entered" from="WIN Area" to="WIN Area" method="_on_body_entered"]
 
 [editable path="Player"]

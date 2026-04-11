@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 const SPEED := 250.0
 const FIRE_RATE := 0.5
-const MAX_AMMO := 4
 const RELOAD_TIME := 1.0
 const RELOAD_REMINDER_INTERVAL := 0.5
 
@@ -35,7 +34,8 @@ var bullet_scene = preload("res://asset/scene/bullet_tscn.tscn")
 const FLOATING_DAMAGE_TEXT_TSCN = preload("uid://bucnhf80vdpqa")
 
 var can_shoot := true
-var ammo := MAX_AMMO
+var max_ammo := 4
+var ammo := 4
 var is_reloading := false
 var is_shooting := false
 var dekat_pintu := false
@@ -64,6 +64,9 @@ var tanda_request_id: int = 0
 var is_game_over := false
 
 func _ready() -> void:
+	max_ammo = GameSettings.get_player_ammo()
+	ammo = max_ammo
+
 	tanda_tanya.visible = false
 
 	if tanda_peluru != null:
@@ -509,9 +512,6 @@ func shoot() -> void:
 	var mouse_pos := get_global_mouse_position()
 	var dir := (mouse_pos - gun_point.global_position).normalized()
 
-	# BARIS ERROR DIHAPUS:
-	# bullet.is_tranq = use_tranq
-
 	bullet.shooter = self
 	bullet.direction = dir
 	bullet.rotation = dir.angle()
@@ -546,7 +546,7 @@ func reload_weapon() -> void:
 		return
 	if is_reloading:
 		return
-	if ammo == MAX_AMMO:
+	if ammo == max_ammo:
 		return
 
 	is_reloading = true
@@ -561,7 +561,7 @@ func reload_weapon() -> void:
 	if is_game_over:
 		return
 
-	ammo = MAX_AMMO
+	ammo = max_ammo
 	is_reloading = false
 
 func show_floating_text(text_value: String, color: Color = Color.WHITE) -> void:
