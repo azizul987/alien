@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://bgnj2xknm0mii" path="res://asset/skrip/jejak.gd" id="10_mwi46"]
 [ext_resource type="Script" uid="uid://cdbx8bwgskl1p" path="res://asset/scene/win_area.gd" id="11_aihg7"]
 [ext_resource type="PackedScene" uid="uid://bcu165qjdfqt2" path="res://asset/scene/pintu.tscn" id="11_i2twx"]
+[ext_resource type="PackedScene" uid="uid://cxj0wpneuc1ad" path="res://asset/scene/menu_pause.tscn" id="12_u7qqg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aihg7"]
 texture = ExtResource("1_327n2")
@@ -1485,6 +1486,8 @@ position = Vector2(426, -594)
 
 [node name="Batas bawah" type="Marker2D" parent="batas" unique_id=197740853]
 position = Vector2(374, 516)
+
+[node name="Menu Pause" parent="." unique_id=1040678243 instance=ExtResource("12_u7qqg")]
 
 [connection signal="timeout" from="Kumpulan Enemy/enemy2/Timer2" to="Kumpulan Enemy/enemy2" method="_on_timer_timeout"]
 [connection signal="timeout" from="Kumpulan Enemy/enemy3/Timer2" to="Kumpulan Enemy/enemy3" method="_on_timer_timeout"]
