@@ -1040,6 +1040,12 @@ position = Vector2(1, 0)
 
 [node name="enemy" parent="Kumpulan Enemy" unique_id=178430130 instance=ExtResource("3_u7qqg")]
 position = Vector2(1070, 192)
+isMoving = true
+isJahat = true
+score_value = 100
+max_hp = 8
+isBoss = false
+can_sleep_from_alien = true
 
 [node name="enemy2" parent="Kumpulan Enemy" unique_id=906714739 instance=ExtResource("9_6wla8")]
 z_index = 1

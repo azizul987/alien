@@ -1,10 +1,16 @@
 extends CharacterBody2D
 
 @export var isMoving: bool = true
-@export var speed: float = 38.0
-@export var chase_speed: float = 170.0
-@export var chase_acceleration: float = 30.0
-@export var max_chase_speed: float = 350.0
+
+# =========================
+# BASE STATS
+# Nilai asli sebelum dikali difficulty
+# =========================
+@export var base_speed: float = 38.0
+@export var base_chase_speed: float = 170.0
+@export var base_chase_acceleration: float = 30.0
+@export var base_max_chase_speed: float = 350.0
+
 @export var isJahat: bool = true
 @export var score_value: int = 100
 @export var max_hp: int = 8
@@ -54,6 +60,15 @@ var player: Node2D = null
 var has_triggered_game_over: bool = false
 var current_chase_speed: float = 0.0
 
+# =========================
+# FINAL STATS
+# Nilai hasil dari base * GameSettings
+# =========================
+var speed: float = 0.0
+var chase_speed: float = 0.0
+var chase_acceleration: float = 0.0
+var max_chase_speed: float = 0.0
+
 # ===== SLEEP SYSTEM =====
 var is_sleeping: bool = false
 var sleep_timer: float = 0.0
@@ -69,7 +84,10 @@ var debug_retaliate_enabled: bool = true
 var retaliate_cooldown: float = 0.0
 var alert_shot_cooldown: float = 0.0
 
+
 func _ready() -> void:
+	apply_difficulty_settings()
+
 	current_hp = max_hp
 	left_pos = kiri.global_position
 	right_pos = kanan.global_position
@@ -83,7 +101,7 @@ func _ready() -> void:
 		player = players_untyped[0] as Node2D
 
 	# Kalau hasil spawn direct chase, langsung jadi mode Alien
-	if spawned_direct_chase:
+	if spawned_direct_chase and isJahat:
 		is_alien_mode = true
 		isMoving = true
 		current_chase_speed = chase_speed
@@ -91,9 +109,50 @@ func _ready() -> void:
 		if animasi != null and animasi.sprite_frames.has_animation("Alien"):
 			animasi.play("Alien")
 			$"Suara Ngejar".play()
+	else:
+		is_alien_mode = false
+		isMoving = true
 
-	print("[READY]", name, " isJahat=", isJahat, " isBoss=", isBoss, " spawned_direct_chase=", spawned_direct_chase, " hp=", current_hp)
-	
+		if animasi != null:
+			if animasi.sprite_frames.has_animation("Run"):
+				animasi.play("Run")
+
+	print(
+		"[READY] ", name,
+		" isJahat=", isJahat,
+		" isBoss=", isBoss,
+		" spawned_direct_chase=", spawned_direct_chase,
+		" hp=", current_hp,
+		" speed=", speed,
+		" chase_speed=", chase_speed,
+		" chase_acceleration=", chase_acceleration,
+		" max_chase_speed=", max_chase_speed
+	)
+
+
+func apply_difficulty_settings() -> void:
+	var walk_mult: float = 1.0
+	var chase_mult: float = 1.0
+
+	# Pastikan GameSettings sudah dijadikan AutoLoad
+	if GameSettings != null:
+		walk_mult = GameSettings.get_enemy_speed_multiplier()
+		chase_mult = GameSettings.get_enemy_chase_multiplier()
+
+	speed = base_speed * walk_mult
+	chase_speed = base_chase_speed * chase_mult
+	chase_acceleration = base_chase_acceleration * chase_mult
+	max_chase_speed = base_max_chase_speed * chase_mult
+
+
+func refresh_stats_from_game_settings() -> void:
+	apply_difficulty_settings()
+
+	if is_alien_mode:
+		current_chase_speed = min(current_chase_speed, max_chase_speed)
+	else:
+		current_chase_speed = chase_speed
+
 
 func take_damage(amount: int, attacker = null) -> void:
 	if is_dead:
@@ -107,7 +166,6 @@ func take_damage(amount: int, attacker = null) -> void:
 	current_hp = max(current_hp, 0)
 
 	show_floating_text("-" + str(amount), Color.RED)
-	#debug_retaliate("kena damage | hp sekarang=" + str(current_hp))
 
 	# Alien jahat masuk mode alien saat ditembak
 	if isJahat and current_hp > 0:
@@ -116,19 +174,21 @@ func take_damage(amount: int, attacker = null) -> void:
 	if current_hp <= 0:
 		die(attacker)
 
+
 func enter_alien_mode() -> void:
 	if is_alien_mode:
 		return
+
+	apply_difficulty_settings()
 
 	is_alien_mode = true
 	isMoving = true
 	current_chase_speed = chase_speed
 
-
-
 	if animasi != null and animasi.sprite_frames.has_animation("Alien"):
 		animasi.play("Alien")
 		$"Suara Ngejar".play()
+
 
 func pass_alien_mode_to_other() -> void:
 	var candidates: Array[Node] = []
@@ -169,9 +229,12 @@ func pass_alien_mode_to_other() -> void:
 		print("[ALIEN MODE] diwariskan ke ", chosen.name)
 		chosen.call("enter_alien_mode")
 
+
 func reset_to_normal_mode() -> void:
 	if is_dead:
 		return
+
+	apply_difficulty_settings()
 
 	is_alien_mode = false
 	isMoving = true
@@ -195,7 +258,6 @@ func reset_to_normal_mode() -> void:
 	else:
 		stop_idle_animation()
 
-	#debug_sleep("RESET KE MODE NORMAL")
 
 func die(attacker = null) -> void:
 	if is_dead:
@@ -210,8 +272,6 @@ func die(attacker = null) -> void:
 
 	if $"Suara Ngejar".playing:
 		$"Suara Ngejar".stop()
-
-	#debug_sleep("MATI")
 
 	# Kalau yang mati sedang mode Alien, wariskan ke alien lain
 	if was_alien_mode:
@@ -256,6 +316,7 @@ func die(attacker = null) -> void:
 	$"Suara Mati".play()
 	await $"Suara Mati".finished
 	queue_free()
+
 
 func _physics_process(delta: float) -> void:
 	if retaliate_cooldown > 0.0:
@@ -337,6 +398,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			stop_idle_animation()
 
+
 # =========================
 # BALAS TEMBAK
 # =========================
@@ -378,6 +440,7 @@ func try_retaliate(attacker) -> void:
 		return
 
 	retaliate_shoot(attacker_node)
+
 
 func check_player_shoot_nearby() -> void:
 	if isJahat:
@@ -423,6 +486,7 @@ func check_player_shoot_nearby() -> void:
 	alert_shot_cooldown = 0.35
 	retaliate_shoot(player)
 
+
 func retaliate_shoot(attacker: Node2D) -> void:
 	if isJahat:
 		return
@@ -445,10 +509,12 @@ func retaliate_shoot(attacker: Node2D) -> void:
 	get_tree().current_scene.add_child(bullet)
 	show_floating_text("BALAS!", Color.ORANGE)
 
+
 func get_forward_direction() -> Vector2:
 	if animasi != null and animasi.flip_h:
 		return Vector2.LEFT
 	return Vector2.RIGHT
+
 
 # =========================
 # SLEEP SYSTEM
@@ -482,6 +548,7 @@ func is_near_evil_alien() -> bool:
 
 	return false
 
+
 func enter_sleep() -> void:
 	if is_sleeping:
 		return
@@ -495,6 +562,7 @@ func enter_sleep() -> void:
 
 	stop_idle_animation()
 	show_sleep_countdown_text()
+
 
 func update_sleep_state(delta: float) -> void:
 	if !is_sleeping:
@@ -511,7 +579,10 @@ func update_sleep_state(delta: float) -> void:
 		forget_memory()
 		wake_up()
 
+
 func forget_memory() -> void:
+	apply_difficulty_settings()
+
 	global_position = spawn_position
 	target_pos = right_pos
 	remembered_target_pos = target_pos
@@ -525,6 +596,7 @@ func forget_memory() -> void:
 
 	show_floating_text("HILANG INGATAN", Color.SKY_BLUE)
 
+
 func wake_up() -> void:
 	is_sleeping = false
 	sleep_timer = 0.0
@@ -537,6 +609,7 @@ func wake_up() -> void:
 	else:
 		stop_idle_animation()
 
+
 func show_sleep_countdown_text() -> void:
 	if !is_sleeping:
 		return
@@ -544,11 +617,13 @@ func show_sleep_countdown_text() -> void:
 	var sisa: int = int(ceil(sleep_timer))
 	show_floating_text("TIDUR: " + str(sisa), Color.DEEP_SKY_BLUE)
 
+
 func stop_idle_animation() -> void:
 	if animasi == null:
 		return
 	animasi.stop()
 	animasi.frame = 0
+
 
 func check_player_collision() -> void:
 	if has_triggered_game_over:
@@ -568,6 +643,7 @@ func check_player_collision() -> void:
 				get_tree().change_scene_to_file("res://kalah.tscn")
 			return
 
+
 func can_attack_player() -> bool:
 	if is_dead:
 		return false
@@ -577,15 +653,18 @@ func can_attack_player() -> bool:
 		return true
 	return false
 
+
 func update_flip() -> void:
 	if velocity.x > 0.0:
 		animasi.flip_h = false
 	elif velocity.x < 0.0:
 		animasi.flip_h = true
 
+
 func _on_timer_timeout() -> void:
 	if velocity.length() > 0.0 and isJahat:
 		buat_jejak()
+
 
 func buat_jejak() -> void:
 	var jejak_baru = jejak_scene.instantiate()
@@ -600,6 +679,7 @@ func buat_jejak() -> void:
 	jejak_baru.global_position = marker_aktif.global_position
 	giliran_kaki_kiri = !giliran_kaki_kiri
 
+
 func show_floating_text(text_value: String, color: Color = Color.WHITE) -> void:
 	var text_instance = FLOATING_DAMAGE_TEXT_TSCN.instantiate()
 	get_tree().current_scene.add_child(text_instance)
@@ -611,6 +691,7 @@ func show_floating_text(text_value: String, color: Color = Color.WHITE) -> void:
 
 	if text_instance.has_method("setup"):
 		text_instance.setup(text_value, color)
+
 
 func get_random_floating_color() -> Color:
 	var colors: Array[Color] = [
