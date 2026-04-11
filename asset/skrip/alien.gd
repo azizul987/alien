@@ -7,13 +7,13 @@ extends CharacterBody2D
 # Nilai asli sebelum dikali difficulty
 # =========================
 @export var base_speed: float = 38.0
-@export var base_chase_speed: float = 170.0
-@export var base_chase_acceleration: float = 30.0
-@export var base_max_chase_speed: float = 350.0
+@export var base_chase_speed: float = 200.0
+@export var base_chase_acceleration: float = 20.0
+@export var base_max_chase_speed: float = 280.0
 
 @export var isJahat: bool = true
 @export var score_value: int = 100
-@export var max_hp: int = 8
+@export var max_hp: int = 40
 @export var isBoss: bool = false
 @export var spawned_direct_chase: bool = false
 
@@ -190,44 +190,44 @@ func enter_alien_mode() -> void:
 		$"Suara Ngejar".play()
 
 
-func pass_alien_mode_to_other() -> void:
-	var candidates: Array[Node] = []
-
-	for node_untyped in get_tree().get_nodes_in_group("alien"):
-		var node: Node = node_untyped as Node
-
-		if node == self:
-			continue
-		if node == null:
-			continue
-		if !is_instance_valid(node):
-			continue
-		if node.get("is_dead") == true:
-			continue
-
-		candidates.append(node)
-
-	if candidates.is_empty():
-		print("[ALIEN MODE] tidak ada alien lain untuk mewarisi mode Alien")
-		return
-
-	var chosen: Node = null
-	var best_distance: float = INF
-
-	if player != null and is_instance_valid(player):
-		for node in candidates:
-			if node is Node2D:
-				var node2d: Node2D = node as Node2D
-				var dist: float = node2d.global_position.distance_to(player.global_position)
-				if dist < best_distance:
-					best_distance = dist
-					chosen = node
-	else:
-		chosen = candidates[0]
-
-	if chosen != null and chosen.has_method("enter_alien_mode"):
-		print("[ALIEN MODE] diwariskan ke ", chosen.name)
-		chosen.call("enter_alien_mode")
+#func pass_alien_mode_to_other() -> void:
+	#var candidates: Array[Node] = []
+#
+	#for node_untyped in get_tree().get_nodes_in_group("alien"):
+		#var node: Node = node_untyped as Node
+#
+		#if node == self:
+			#continue
+		#if node == null:
+			#continue
+		#if !is_instance_valid(node):
+			#continue
+		#if node.get("is_dead") == true:
+			#continue
+#
+		#candidates.append(node)
+#
+	#if candidates.is_empty():
+		#print("[ALIEN MODE] tidak ada alien lain untuk mewarisi mode Alien")
+		#return
+#
+	#var chosen: Node = null
+	#var best_distance: float = INF
+#
+	#if player != null and is_instance_valid(player):
+		#for node in candidates:
+			#if node is Node2D:
+				#var node2d: Node2D = node as Node2D
+				#var dist: float = node2d.global_position.distance_to(player.global_position)
+				#if dist < best_distance:
+					#best_distance = dist
+					#chosen = node
+	#else:
+		#chosen = candidates[0]
+#
+	#if chosen != null and chosen.has_method("enter_alien_mode"):
+		#print("[ALIEN MODE] diwariskan ke ", chosen.name)
+		#chosen.call("enter_alien_mode")
 
 
 func reset_to_normal_mode() -> void:
@@ -274,8 +274,8 @@ func die(attacker = null) -> void:
 		$"Suara Ngejar".stop()
 
 	# Kalau yang mati sedang mode Alien, wariskan ke alien lain
-	if was_alien_mode:
-		pass_alien_mode_to_other()
+	#if was_alien_mode:
+		#pass_alien_mode_to_other()
 
 	# BOSS MATI = MENANG, tidak peduli isJahat true/false
 	if isBoss:

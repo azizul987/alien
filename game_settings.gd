@@ -18,15 +18,15 @@ func get_player_ammo() -> int:
 		Difficulty.NORMAL:
 			return 6
 		Difficulty.HARD:
-			return 5
+			return 4
 	return 5
 
 func get_enemy_speed_multiplier() -> float:
 	match selected_difficulty:
 		Difficulty.EASY:
-			return 0.6
-		Difficulty.NORMAL:
 			return 0.8
+		Difficulty.NORMAL:
+			return 1.0
 		Difficulty.HARD:
 			return 1.2
 	return 1.0
@@ -34,9 +34,19 @@ func get_enemy_speed_multiplier() -> float:
 func get_enemy_chase_multiplier() -> float:
 	match selected_difficulty:
 		Difficulty.EASY:
-			return 0.6
+			return 0.5
 		Difficulty.NORMAL:
-			return 0.8
+			return 1.0
 		Difficulty.HARD:
-			return 1.5
+			return 1.2
+	return 1.0
+
+func get_enemy_max_speed_multiplier() -> float:
+	match selected_difficulty:
+		Difficulty.EASY:
+			return 0.9
+		Difficulty.NORMAL:
+			return 1.0
+		Difficulty.HARD:
+			return 1.2
 	return 1.0

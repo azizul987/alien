@@ -9,7 +9,7 @@ const HIDE_PER_USE_DURATION := 2.0
 const DEFAULT_HIDE_TOTAL_DURATION := 6.0
 const HIDE_GROUP_SCAN_RADIUS := 3
 
-const TANDA_SWAP_DURATION := 0.5
+#const TANDA_SWAP_DURATION := 0.5
 const TANDA_RELOAD_DURATION := 0.5
 
 const HIDE_COUNTDOWN_TEXT_INTERVAL := 1.0
@@ -153,8 +153,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("reload_weapon"):
 		reload_weapon()
 
-	if Input.is_action_just_pressed("swap_weapon"):
-		swap_weapon()
+	#if Input.is_action_just_pressed("swap_weapon"):
+		#swap_weapon()
 
 	if Input.is_action_just_pressed("toggle_kacamata"):
 		is_using_kacamata = !is_using_kacamata
@@ -182,7 +182,7 @@ func _physics_process(delta: float) -> void:
 	if ammo <= 0 and !is_reloading:
 		reload_reminder_cooldown -= delta
 		if reload_reminder_cooldown <= 0.0:
-			show_floating_text("BUTUH RELOAD - TEKAN Z", Color.ORANGE)
+			show_floating_text("BUTUH RELOAD - TEKAN R", Color.ORANGE)
 			reload_reminder_cooldown = RELOAD_REMINDER_INTERVAL
 	else:
 		reload_reminder_cooldown = 0.0
@@ -470,16 +470,16 @@ func show_tanda_temporarily(target: CanvasItem, duration: float) -> void:
 	if current_id == tanda_request_id and target != null:
 		target.visible = false
 
-func swap_weapon() -> void:
-	if is_reloading or is_hiding or is_game_over:
-		return
-
-	use_tranq = !use_tranq
-
-	if use_tranq:
-		show_tanda_temporarily(tanda_bius, TANDA_SWAP_DURATION)
-	else:
-		show_tanda_temporarily(tanda_peluru, TANDA_SWAP_DURATION)
+#func swap_weapon() -> void:
+	#if is_reloading or is_hiding or is_game_over:
+		#return
+#
+	#use_tranq = !use_tranq
+#
+	#if use_tranq:
+		#show_tanda_temporarily(tanda_bius, TANDA_SWAP_DURATION)
+	#else:
+		#show_tanda_temporarily(tanda_peluru, TANDA_SWAP_DURATION)
 
 # =========================
 # COMBAT / UI
@@ -522,7 +522,7 @@ func shoot() -> void:
 		bullet.damage = 1
 	else:
 		bullet.bullet_color = Color.YELLOW
-		bullet.damage = 2
+		bullet.damage = 10
 
 	show_floating_text("-" + str(ammo), Color.DODGER_BLUE)
 
