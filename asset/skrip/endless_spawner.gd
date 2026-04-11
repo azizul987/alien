@@ -6,10 +6,16 @@ extends Node2D
 @export var min_distance_from_player: float = 220.0
 @export var max_distance_from_player: float = 420.0
 
+# RANDOM TIPE NPC
+@export_range(0.0, 1.0, 0.01) var chance_jahat: float = 0.5
+@export_range(0.0, 1.0, 0.01) var chance_baik: float = 0.5
+
+# DIRECT CHASE
 @export var direct_chase_on_spawn: bool = true
 @export_range(0.0, 1.0, 0.01) var base_direct_chase_chance: float = 0.35
 @export_range(0.0, 1.0, 0.01) var chance_increase_on_fail: float = 0.15
 
+# ANIMASI SPAWN
 @export var require_animation_before_spawn: bool = false
 @export var spawn_animation_name: String = "spawn"
 @export var delay_after_animation: float = 0.0
@@ -23,9 +29,11 @@ var alive_aliens: Array[Node] = []
 var current_direct_chase_chance: float = 0.0
 var spawn_request_pending: bool = false
 var is_spawn_sequence_running: bool = false
+var endless_spawn_stopped: bool = false
 
 
 func _ready() -> void:
+	randomize()
 	add_to_group("endless_spawner")
 
 	if timer == null:
@@ -57,6 +65,9 @@ func _process(_delta: float) -> void:
 
 
 func _on_timer_timeout() -> void:
+	if endless_spawn_stopped:
+		return
+
 	_cleanup_invalid_aliens()
 
 	if !spawn_enabled():
@@ -73,7 +84,7 @@ func _on_timer_timeout() -> void:
 
 
 func spawn_enabled() -> bool:
-	return alien_scene != null and player != null
+	return alien_scene != null and player != null and !endless_spawn_stopped
 
 
 func start_spawn_sequence() -> void:
@@ -87,13 +98,13 @@ func start_spawn_sequence() -> void:
 
 	await play_spawn_animation_and_delay()
 
-	if spawn_request_pending:
+	if spawn_request_pending and !endless_spawn_stopped:
 		spawn_alien()
 
 	spawn_request_pending = false
 	is_spawn_sequence_running = false
 
-	if timer != null:
+	if timer != null and !endless_spawn_stopped:
 		timer.start()
 
 
@@ -101,12 +112,10 @@ func play_spawn_animation_and_delay() -> void:
 	var played_animation: bool = false
 
 	if anim_player != null:
-		# Tunggu animasi lain yang sedang berjalan selesai dulu
 		while anim_player.is_playing():
 			print("[SPAWNER] menunggu animasi aktif selesai: ", anim_player.current_animation)
 			await anim_player.animation_finished
 
-		# Setelah player idle, baru mainkan animasi spawn
 		if anim_player.has_animation(spawn_animation_name):
 			played_animation = true
 			print("[SPAWNER] animasi spawn mulai: ", spawn_animation_name)
@@ -153,17 +162,36 @@ func spawn_alien() -> void:
 
 	alien_node.global_position = get_random_spawn_position()
 
+	# =========================
+	# RANDOM BAIK / JAHAT
+	# =========================
+	var total_chance := chance_jahat + chance_baik
+	if total_chance <= 0.0:
+		total_chance = 1.0
+
+	var roll_alignment := randf() * total_chance
+	var hasil_jahat := roll_alignment < chance_jahat
+
+	if alien_instance.has_method("set"):
+		alien_instance.set("isJahat", hasil_jahat)
+
+	# =========================
+	# DIRECT CHASE HANYA BUAT YANG JAHAT
+	# =========================
 	var use_direct_chase := false
-	if direct_chase_on_spawn:
-		var roll := randf()
-		use_direct_chase = roll <= current_direct_chase_chance
+
+	if hasil_jahat and direct_chase_on_spawn:
+		var roll_chase := randf()
+		use_direct_chase = roll_chase <= current_direct_chase_chance
 
 		if use_direct_chase:
 			current_direct_chase_chance = base_direct_chase_chance
-			print("[SPAWNER] direct chase AKTIF | roll=", roll, " | reset chance=", current_direct_chase_chance)
+			print("[SPAWNER] direct chase AKTIF | roll=", roll_chase, " | reset chance=", current_direct_chase_chance)
 		else:
 			current_direct_chase_chance = min(current_direct_chase_chance + chance_increase_on_fail, 1.0)
-			print("[SPAWNER] direct chase gagal | roll=", roll, " | chance naik jadi=", current_direct_chase_chance)
+			print("[SPAWNER] direct chase gagal | roll=", roll_chase, " | chance naik jadi=", current_direct_chase_chance)
+	else:
+		use_direct_chase = false
 
 	if alien_instance.has_method("set"):
 		alien_instance.set("spawned_direct_chase", use_direct_chase)
@@ -174,7 +202,16 @@ func spawn_alien() -> void:
 	if alien_instance.tree_exited.is_connected(_on_alien_exited) == false:
 		alien_instance.tree_exited.connect(_on_alien_exited.bind(alien_instance))
 
-	print("[ENDLESS SPAWNER] alien spawn di ", alien_node.global_position, " | alive=", alive_aliens.size())
+	print(
+		"[ENDLESS SPAWNER] NPC spawn di ",
+		alien_node.global_position,
+		" | tipe=",
+		"JAHAT" if hasil_jahat else "BAIK",
+		" | direct_chase=",
+		use_direct_chase,
+		" | alive=",
+		alive_aliens.size()
+	)
 
 
 func get_random_spawn_position() -> Vector2:
@@ -198,3 +235,14 @@ func _cleanup_invalid_aliens() -> void:
 		if is_instance_valid(alien):
 			valid_aliens.append(alien)
 	alive_aliens = valid_aliens
+
+
+func stop_endless_spawn() -> void:
+	endless_spawn_stopped = true
+	spawn_request_pending = false
+	is_spawn_sequence_running = false
+
+	if timer != null:
+		timer.stop()
+
+	print("[ENDLESS SPAWNER] spawn dihentikan")
