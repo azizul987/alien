@@ -13,6 +13,8 @@ const HIDE_GROUP_SCAN_RADIUS := 3
 const TANDA_SWAP_DURATION := 0.5
 const TANDA_RELOAD_DURATION := 0.5
 
+const HIDE_COUNTDOWN_TEXT_INTERVAL := 1.0
+
 @onready var detector: Node2D = $TileDetector
 @onready var sprite: AnimatedSprite2D = $Pivot/AnimatedSprite2D
 @onready var gun_point: Marker2D = $Pivot/GunPoint
@@ -27,8 +29,9 @@ const TANDA_RELOAD_DURATION := 0.5
 
 @onready var tanda_peluru: CanvasItem = $"Tanda Peluru"
 @onready var tanda_bius: CanvasItem = $"Tanda Bius"
+@onready var tanda_sembunyi: Node2D = $"Tanda Sembunyi"
 
-var bullet_scene = preload("res://asset/node/bullet_tscn.tscn")
+var bullet_scene = preload("res://asset/scene/bullet_tscn.tscn")
 const FLOATING_DAMAGE_TEXT_TSCN = preload("uid://bucnhf80vdpqa")
 
 var can_shoot := true
@@ -53,6 +56,7 @@ var current_hide_tiles: Array[Vector2i] = []
 var debug_hide_enabled: bool = true
 var hide_group_used_time: Dictionary = {}
 var hide_group_total_time: Dictionary = {}
+var hide_countdown_text_cooldown: float = 0.0
 
 # ===== TANDA SYSTEM =====
 var tanda_request_id: int = 0
@@ -66,8 +70,21 @@ func _ready() -> void:
 		tanda_peluru.visible = false
 	if tanda_bius != null:
 		tanda_bius.visible = false
+	if tanda_sembunyi != null:
+		tanda_sembunyi.visible = false
+
+	visible = true
 
 func _physics_process(delta: float) -> void:
+	if is_game_over:
+		velocity = Vector2.ZERO
+
+		if step_sound.playing:
+			step_sound.stop()
+
+		move_and_slide()
+		return
+
 	var ui = get_ui()
 
 	# Dokumen terbuka = player berhenti
@@ -75,6 +92,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		if step_sound.playing:
 			step_sound.stop()
+		update_tanda_sembunyi()
 		move_and_slide()
 		return
 
@@ -86,6 +104,8 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		if step_sound.playing:
 			step_sound.stop()
+
+		update_tanda_sembunyi()
 		move_and_slide()
 
 		if Input.is_action_just_pressed("interact"):
@@ -101,6 +121,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	update_tanda_tanya()
+	update_tanda_sembunyi()
 
 	var mouse_pos := get_global_mouse_position()
 
@@ -111,7 +132,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		sprite.flip_h = mouse_pos.x < global_position.x
 
-	if !is_shooting and !is_reloading:
+	if !is_game_over and !is_shooting and !is_reloading:
 		if input_vector != Vector2.ZERO:
 			if sprite.animation != "Run":
 				sprite.play("Run")
@@ -137,13 +158,11 @@ func _physics_process(delta: float) -> void:
 		kacamata.enabled = is_using_kacamata
 
 	if Input.is_action_just_pressed("interact"):
-		# Prioritas 1: sembunyi
 		var hide_data := get_hide_tile_data()
 		if !hide_data.is_empty() and hide_data["hideable"]:
 			enter_hide()
 			return
 
-		# Prioritas 2: buka petunjuk
 		if current_petunjuk_id > 0 and ui != null and !ui.is_dokumen_open():
 			ui.buka_dokumen(current_petunjuk_id)
 
@@ -176,7 +195,18 @@ func get_ui():
 
 func update_tanda_tanya() -> void:
 	current_petunjuk_id = get_petunjuk_value()
-	tanda_tanya.visible = current_petunjuk_id > 0 and !is_hiding
+	tanda_tanya.visible = current_petunjuk_id > 0 and !is_hiding and !is_game_over
+
+func update_tanda_sembunyi() -> void:
+	if tanda_sembunyi == null:
+		return
+
+	if is_hiding or is_game_over:
+		tanda_sembunyi.visible = false
+		return
+
+	var hide_data := get_hide_tile_data()
+	tanda_sembunyi.visible = !hide_data.is_empty() and hide_data["hideable"]
 
 func get_petunjuk_value() -> int:
 	if petunjuk == null:
@@ -249,7 +279,7 @@ func reset_all_aliens_to_normal() -> void:
 			node.reset_to_normal_mode()
 
 func enter_hide() -> void:
-	if is_hiding:
+	if is_hiding or is_game_over:
 		return
 
 	var data := get_hide_tile_data()
@@ -291,9 +321,13 @@ func enter_hide() -> void:
 	is_hiding = true
 	hide_timer = min(HIDE_PER_USE_DURATION, sisa_total)
 	current_hide_group = group_id
+	hide_countdown_text_cooldown = 0.0
 
 	velocity = Vector2.ZERO
 	tanda_tanya.visible = false
+
+	if tanda_sembunyi != null:
+		tanda_sembunyi.visible = false
 
 	if collision_shape != null:
 		collision_shape.disabled = true
@@ -307,7 +341,11 @@ func enter_hide() -> void:
 		sprite.play("hide")
 		await sprite.animation_finished
 
+		if !is_hiding or is_game_over:
+			return
+
 	visible = false
+	show_hide_countdown_text()
 
 	debug_hide(
 		"masuk hide | group=" + str(current_hide_group) +
@@ -324,12 +362,17 @@ func exit_hide() -> void:
 	hide_timer = 0.0
 	current_hide_group = -1
 	current_hide_tiles.clear()
+	hide_countdown_text_cooldown = 0.0
 
 	visible = true
 
 	if collision_shape != null:
 		collision_shape.disabled = false
 
+	if sprite != null and !is_shooting and !is_reloading and !is_game_over:
+		sprite.play("Idle")
+
+	update_tanda_sembunyi()
 	debug_hide("keluar hide")
 
 func break_hide_tiles_by_group(group_id: int, center_tile: Vector2i) -> void:
@@ -354,10 +397,11 @@ func break_hide_object() -> void:
 	exit_hide()
 
 func update_hide_state(delta: float) -> void:
-	if !is_hiding:
+	if !is_hiding or is_game_over:
 		return
 
 	hide_timer -= delta
+	hide_countdown_text_cooldown -= delta
 
 	if current_hide_group >= 0:
 		if !hide_group_used_time.has(current_hide_group):
@@ -367,6 +411,10 @@ func update_hide_state(delta: float) -> void:
 
 		var total_limit: float = hide_group_total_time.get(current_hide_group, DEFAULT_HIDE_TOTAL_DURATION)
 
+		if hide_countdown_text_cooldown <= 0.0:
+			show_hide_countdown_text()
+			hide_countdown_text_cooldown = HIDE_COUNTDOWN_TEXT_INTERVAL
+
 		if hide_group_used_time[current_hide_group] >= total_limit:
 			hide_group_used_time[current_hide_group] = total_limit
 			break_hide_object()
@@ -374,6 +422,21 @@ func update_hide_state(delta: float) -> void:
 
 	if hide_timer <= 0.0:
 		exit_hide()
+
+func get_hide_remaining_time() -> float:
+	if current_hide_group < 0:
+		return 0.0
+
+	var total_limit: float = hide_group_total_time.get(current_hide_group, DEFAULT_HIDE_TOTAL_DURATION)
+	var used_time: float = hide_group_used_time.get(current_hide_group, 0.0)
+	return max(total_limit - used_time, 0.0)
+
+func show_hide_countdown_text() -> void:
+	if !is_hiding or is_game_over:
+		return
+
+	var sisa_total := get_hide_remaining_time()
+	show_floating_text("SISA HIDE: %.1fs" % sisa_total, Color.AQUA)
 
 func debug_hide(message: String) -> void:
 	if debug_hide_enabled:
@@ -405,9 +468,7 @@ func show_tanda_temporarily(target: CanvasItem, duration: float) -> void:
 		target.visible = false
 
 func swap_weapon() -> void:
-	if is_reloading:
-		return
-	if is_hiding:
+	if is_reloading or is_hiding or is_game_over:
 		return
 
 	use_tranq = !use_tranq
@@ -425,7 +486,7 @@ func shoot() -> void:
 	var ui = get_ui()
 	if ui != null and ui.is_dokumen_open():
 		return
-	if is_hiding:
+	if is_hiding or is_game_over:
 		return
 	if !can_shoot:
 		return
@@ -438,6 +499,8 @@ func shoot() -> void:
 	is_shooting = true
 	ammo -= 1
 
+	visible = true
+
 	sprite.play("Shoot")
 	gun_sound.play()
 
@@ -446,7 +509,9 @@ func shoot() -> void:
 	var mouse_pos := get_global_mouse_position()
 	var dir := (mouse_pos - gun_point.global_position).normalized()
 
-	bullet.is_tranq = use_tranq
+	# BARIS ERROR DIHAPUS:
+	# bullet.is_tranq = use_tranq
+
 	bullet.shooter = self
 	bullet.direction = dir
 	bullet.rotation = dir.angle()
@@ -466,14 +531,18 @@ func shoot() -> void:
 	await sprite.animation_finished
 	is_shooting = false
 
+	if is_game_over:
+		return
+
 	await get_tree().create_timer(FIRE_RATE).timeout
 	can_shoot = true
 
 func reload_weapon() -> void:
+	$"Reload Sound".play()
 	var ui = get_ui()
 	if ui != null and ui.is_dokumen_open():
 		return
-	if is_hiding:
+	if is_hiding or is_game_over:
 		return
 	if is_reloading:
 		return
@@ -481,12 +550,17 @@ func reload_weapon() -> void:
 		return
 
 	is_reloading = true
+	visible = true
 	sprite.play("Idle")
 	show_floating_text("RELOADING...", Color.WHITE)
 
 	show_tanda_temporarily(tanda_peluru, TANDA_RELOAD_DURATION)
 
 	await get_tree().create_timer(RELOAD_TIME).timeout
+
+	if is_game_over:
+		return
+
 	ammo = MAX_AMMO
 	is_reloading = false
 
@@ -519,4 +593,29 @@ func game_over():
 	can_shoot = false
 	is_reloading = false
 	is_shooting = false
-	get_tree().reload_current_scene()
+
+	is_hiding = false
+	hide_timer = 0.0
+	current_hide_group = -1
+	current_hide_tiles.clear()
+	hide_countdown_text_cooldown = 0.0
+
+	visible = true
+	velocity = Vector2.ZERO
+
+	if step_sound.playing:
+		step_sound.stop()
+
+	if collision_shape != null:
+		collision_shape.disabled = false
+
+	tanda_tanya.visible = false
+	update_tanda_sembunyi()
+
+	if sprite != null:
+		sprite.play("Death")
+		await sprite.animation_finished
+		$"death sound".play()
+		await $"death sound".finished
+
+	get_tree().change_scene_to_file("res://kalah.tscn")

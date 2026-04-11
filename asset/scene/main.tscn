@@ -7,7 +7,7 @@
 [ext_resource type="TileSet" uid="uid://gcnfljvjnf2t" path="res://HideObjek.tres" id="6_nfdib"]
 [ext_resource type="PackedScene" uid="uid://cxj0wpneuc1ad" path="res://asset/scene/menu_pause.tscn" id="7_p5ssj"]
 [ext_resource type="AudioStream" uid="uid://0adnun1q623n" path="res://asset/music/backsound.wav" id="8_35ody"]
-[ext_resource type="PackedScene" uid="uid://cj6yuuxcxvp0h" path="res://asset/node/Alien.tscn" id="9_6wla8"]
+[ext_resource type="PackedScene" uid="uid://cj6yuuxcxvp0h" path="res://asset/scene/Alien.tscn" id="9_6wla8"]
 [ext_resource type="Script" uid="uid://bgnj2xknm0mii" path="res://asset/skrip/jejak.gd" id="10_mwi46"]
 [ext_resource type="PackedScene" uid="uid://bcu165qjdfqt2" path="res://asset/scene/pintu.tscn" id="11_i2twx"]
 
@@ -1028,7 +1028,7 @@ tile_set = SubResource("TileSet_1bvp3")
 [node name="Petunjuk" type="TileMapLayer" parent="." unique_id=268636364]
 position = Vector2(562, 180)
 scale = Vector2(1.6, 1.6)
-tile_map_data = PackedByteArray("AAADAPf/AAANABwAAAADAPj/AAANAB0AAAAEAPf/AAAOABwAAAAEAPj/AAAOAB0AAAD+//X/AAACABIAAAD+//b/AAACABMAAAD+//f/AAACABQAAADw//f/AAAKACMAAADw//j/AAAKACQAAADy/wIAAAAJACMAAADy/wMAAAAJACQAAAAOAAEAAAAEABIAAAAOAAIAAAAEABMAAAAOAAMAAAAEABQAAAAPAAEAAAAFABIAAAAPAAIAAAAFABMAAAAPAAMAAAAFABQAAAA=")
+tile_map_data = PackedByteArray("AAADAPf/AAANABwAAAADAPj/AAANAB0AAAAEAPf/AAAOABwAAAAEAPj/AAAOAB0AAAD+//X/AAACABIAAAD+//b/AAACABMAAAD+//f/AAACABQAAADw//f/AAAKACMAAADw//j/AAAKACQAAADy/wIAAAAJACMAAADy/wMAAAAJACQAAAAOAAEAAAAEABIAAAAOAAIAAAAEABMAAAAOAAMAAAAEABQAAAAPAAEAAAAFABIAAAAPAAIAAAAFABMAAAAPAAMAAAAFABQAAADv/wAAAAAJACQAAADv////AAAJACMAAADu/wAAAAAJACMAAAA=")
 tile_set = SubResource("TileSet_327n2")
 
 [node name="Kumpulan Enemy" type="Node2D" parent="." unique_id=1347962761]
@@ -1058,9 +1058,10 @@ autostart = true
 
 [node name="enemy2" parent="Kumpulan Enemy" unique_id=906714739 instance=ExtResource("9_6wla8")]
 z_index = 1
-position = Vector2(596, 1.0000019)
+position = Vector2(596, 2)
 scale = Vector2(1.6, 1.6)
 isJahat = false
+max_hp = 10
 
 [node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy2" unique_id=586841789]
 position = Vector2(53.125008, -4.375)
@@ -1257,7 +1258,7 @@ autostart = true
 
 [node name="enemy11" parent="Kumpulan Enemy" unique_id=1045226126 instance=ExtResource("9_6wla8")]
 z_index = 1
-position = Vector2(-334.99997, 189)
+position = Vector2(603.99994, -351.99997)
 scale = Vector2(1.6, 1.6)
 
 [node name="Kiri" type="Marker2D" parent="Kumpulan Enemy/enemy11" unique_id=946105183]

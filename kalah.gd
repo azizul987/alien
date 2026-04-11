@@ -12,4 +12,6 @@ func _process(delta: float) -> void:
 
 
 func _on_keluar_pressed() -> void:
+	$Button_sound.play()
+	await  $Button_sound.finished
 	get_tree().change_scene_to_file("res://asset/scene/main_menu.tscn")

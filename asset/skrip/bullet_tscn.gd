@@ -30,9 +30,23 @@ func _on_body_entered(body: Node) -> void:
 	if body == shooter:
 		return
 
-	if body.is_in_group("player"):
+	if shooter != null:
+		# peluru player jangan kena player
+		if shooter.is_in_group("player") and body.is_in_group("player"):
+			return
+
+		# peluru alien/NPC jangan kena alien/NPC lain
+		if shooter.is_in_group("alien") and body.is_in_group("alien"):
+			return
+
+	# TAMBAHAN: kalau kena player, langsung game over
+	if body.is_in_group("player") and body.has_method("game_over"):
+		body.game_over()
+		queue_free()
 		return
 
+	# selain player, pakai damage biasa
 	if body.has_method("take_damage"):
-			body.take_damage(damage, shooter)
+		body.take_damage(damage, shooter)
+
 	queue_free()

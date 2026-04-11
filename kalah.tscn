@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://co8x2lfjlwu0b" path="res://kalah.gd" id="1_85dp1"]
 [ext_resource type="FontFile" uid="uid://cqnlacelcpx1c" path="res://Minecraft.ttf" id="2_ae1t5"]
+[ext_resource type="AudioStream" uid="uid://b540fbcy6umrl" path="res://asset/music/rick-rolled-meme-aetrim1602054550919.wav" id="3_ae1t5"]
+[ext_resource type="AudioStream" uid="uid://cqvacmbhjaofm" path="res://asset/music/snap.wav" id="4_hmlbd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hmlbd"]
 bg_color = Color(0, 0, 0, 1)
@@ -61,5 +63,12 @@ theme_override_fonts/font = ExtResource("2_ae1t5")
 theme_override_font_sizes/font_size = 27
 theme_override_styles/normal = SubResource("StyleBoxFlat_hmlbd")
 text = "Keluar"
+
+[node name="Backsound" type="AudioStreamPlayer" parent="." unique_id=1630762982]
+stream = ExtResource("3_ae1t5")
+autoplay = true
+
+[node name="Button_sound" type="AudioStreamPlayer" parent="." unique_id=186485269]
+stream = ExtResource("4_hmlbd")
 
 [connection signal="pressed" from="Control/Panel/keluar" to="." method="_on_keluar_pressed"]

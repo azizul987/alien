@@ -14,6 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://cfachs0u8hnaq" path="res://asset/Tanda Tanya.png" id="12_ivps1"]
 [ext_resource type="Texture2D" uid="uid://s2v682gu17lm" path="res://asset/image/peluru.png" id="13_bwjto"]
 [ext_resource type="Texture2D" uid="uid://bee06sbctoi3c" path="res://asset/image/bius.png" id="14_606se"]
+[ext_resource type="AudioStream" uid="uid://b4yia4avw4eau" path="res://Snake's Authentic Gun Sounds/Reloads, Cycling & More/WAV/AR Charging Handle WAV.wav" id="15_606se"]
+[ext_resource type="Texture2D" uid="uid://bs7bevycv8su1" path="res://asset/image/sembunyi.png" id="15_u1c27"]
+[ext_resource type="AudioStream" uid="uid://cqvacmbhjaofm" path="res://asset/music/snap.wav" id="17_op7ga"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
 atlas = ExtResource("2_dw050")
@@ -146,7 +149,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"Death",
-"speed": 5.0
+"speed": 26.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -275,7 +278,7 @@ text = "Ganti Ke Peluru"
 font = ExtResource("10_nvl01")
 
 [sub_resource type="TextMesh" id="TextMesh_op7ga"]
-text = "Ganti Ke Bius"
+text = "Pencet E Untu sembunyi"
 font = ExtResource("10_nvl01")
 
 [node name="Player" type="CharacterBody2D" unique_id=1445277376 groups=["player"]]
@@ -359,6 +362,7 @@ scale = Vector2(0.40625, 0.40625)
 texture = ExtResource("12_ivps1")
 
 [node name="Tanda Peluru" type="Node2D" parent="." unique_id=1142662632]
+visible = false
 position = Vector2(0, -15)
 
 [node name="Text2" type="MeshInstance2D" parent="Tanda Peluru" unique_id=800645870]
@@ -384,6 +388,25 @@ mesh = SubResource("TextMesh_op7ga")
 position = Vector2(1, -3)
 scale = Vector2(0.40625, 0.40625)
 texture = ExtResource("14_606se")
+
+[node name="Tanda Sembunyi" type="Node2D" parent="." unique_id=1667962169]
+position = Vector2(0, -15)
+
+[node name="Text2" type="MeshInstance2D" parent="Tanda Sembunyi" unique_id=2033550086]
+position = Vector2(0.5000005, -7)
+scale = Vector2(20.591593, -25.52083)
+mesh = SubResource("TextMesh_op7ga")
+
+[node name="TandaTanya" type="Sprite2D" parent="Tanda Sembunyi" unique_id=1260730688]
+position = Vector2(1, -3)
+scale = Vector2(0.40625, 0.40625)
+texture = ExtResource("15_u1c27")
+
+[node name="Reload Sound" type="AudioStreamPlayer2D" parent="." unique_id=669132270]
+stream = ExtResource("15_606se")
+
+[node name="death sound" type="AudioStreamPlayer2D" parent="." unique_id=869240200]
+stream = ExtResource("17_op7ga")
 
 [connection signal="body_entered" from="Deteksi" to="Deteksi" method="_on_body_entered"]
 [connection signal="body_exited" from="Deteksi" to="Deteksi" method="_on_body_exited"]
